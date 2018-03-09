@@ -1,0 +1,3 @@
+#Ignore unit test
+test/**
+*test.py

@@ -1,39 +1,80 @@
 import json, sys
-class fiction_dictionary:
+from collections import UserDict, defaultdict
+#TODO:
+#Implement against test features.
+class FictionDict(UserDict):
+    '''
+    Fiction Dictionary Class: inherits from UserDict dict wrapper
+    Description: used to create fiction dictionaries which can be saved to exported from json files
+    '''
+    def __init__(self, name, data=defaultdict(lambda: 'Not yet defined'), **kwargs):
+        UserDict.__init__(self)
+        self.name=name
+        self.update(data)
+        self.update(kwargs)
+
+    def __add__(self, other):
+        '''
+        Implementation of '+' operation uses first dictionary and appends data to it.
+        Keeps the first dictionarys name
+        example:
+        If a.name='Dune' and b.name=Neuromancer
+        (a+b).name='Dune'
+        (a+b).data={Dune dictionary, Neuromancer dictionary}
+        If a word in a and b are the same the value in b will clobber the value in a
+        '''
+        #Current dictionary initialization
+        cDict=FictionDict(self.name, self.data)
+        cDict.update(other)
+        return cDict 
     
-    '''
-    Library used to provide quick shortcut searchable dictionary using JSON to store and find words
-    commonly found in fantasy and sci-fi books, which are only used in the context of the book, but not in the
-    books native lanuage
-    '''
-    # initiate the class with the name of the dictionary and the dictionary itself.
-    # If not passed, pass an empty dictionary.
-    def __init__(self, dict_name, fict_dict=None):
-        self.dict_name=dict_name
-        if fict_dict == None:
-            self.fict_dict={}
-        else:
-            self.fict_dict=fict_dict
+    def __sub__(self, other):
+        '''
+        Implementation of '-' operation deletes elements of the second dictionary from the first
+        Keeps the first dicionarys name
+        example
+        If a.name='Dune' and b.name=Neuromancer
+        (a-b).name='Dune'
+        if b is a subset of a then a-b returns a
+        Does not delete b.item from a if only b.key== a.key
+        Only deletes b.item if b.key==a.key && a.val == b.vall
+        Returns the dictionary without the deleted elements
+        '''
+        #current dictionary initialization
+        cDict=FictionDict(self.name, self.data)
+        for word, definition in other.items():
+            if  word in cDict:
+                if other[word] ==cDict[word]:
+                    print('Deleting', word)
+                    del cDict[word]
+                else:
+                    print(word, " id not defined like'", word)
+            else:
+                print(word, "not in", cDict.name)
+        return cDict
 
-    def write_dict_to_json():
-        filename=self.dict_name+'.json'
-        with open(filename, 'w') as fw:
-            json.dump(self.file_dict, fw)
-        
-    def add_word(word, definition):
-        self.fict_dict[word]=definition
 
-    def remove_word(word):
-        del self.fict_dict[word]
 
-    def import_json_dict(json_file):
-        pass
-   
-    def set_definition(word, new_def):
-        if not self.fict_dict[word]:
-            print('The word', word, 'is not in the fiction dictionary!')
-        else:
-            self.fict_dict[word]=new_def
 
-    def search_word(word_iterator):
-        pass
+    def __repr__(self): 
+        '''
+        Official string repersentation
+        For  programatic use. Displays the type, and all attributes of a Fiction Dictionary
+        '''
+        return 'FictionDict('+self.name+': '+self.data.__repr__()+')'
+
+    def __str__(self):
+        '''
+        Informal string repersentation
+        Implementation of the print method.
+        Makes print of fiction Dictionary, by adding line feeds to each word
+        Also adds tab between word and definition
+        '''
+        buildstring=''
+        for word, definition in self.items():
+            buildstring=buildstring+word+':\t'+definition+'\n'
+        return buildstring
+
+
+
+    
