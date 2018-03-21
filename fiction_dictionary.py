@@ -9,7 +9,7 @@ class FictionDict(UserDict):
     '''
 
     #Keep class generation generic do the fancy stuff later
-    def __init__(self, name="",  data=defaultdict(lambda: "Not defined yet"), **kwargs):
+    def __init__(self, name="",  data=dict(), **kwargs):
         UserDict.__init__(self)
         self.name=name
         self.update(data)
@@ -40,16 +40,18 @@ class FictionDict(UserDict):
         #Check that value is of type dictionary and replace data with value
         #Otherwise return error.
         try:
-            if isinstance(value, dict):
-                self.clear()
-                self.update(value)
-            else:
-                raise TypeError
+            if not isinstance(value, dict):
+               raise TypeError
+            self.clear()
+            self.update(value)
         except TypeError as te:
             print("Expected a Dictionary got a ", type(value))
 
-
-
+    #def update(self, value):
+        '''
+        Extension of  UserDict update to use a UserList as dictionary value
+        '''
+        #pass
 
     def __add__(self, other):
         '''
@@ -115,5 +117,10 @@ class FictionDict(UserDict):
         '''
         Adds a single word, or dictionary of words to the fiction dictionary.
         '''
-        self.data.update(wordDict)
-
+        try:
+            if  not isinstance(wordDict, dict):
+                raise TypeError
+            print(type(wordDict))
+            self.data.update(wordDict)
+        except TypeError as te2:
+            print("Expected a Dictionary got a ", type(wordDict))
