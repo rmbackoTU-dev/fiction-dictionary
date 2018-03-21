@@ -7,11 +7,49 @@ class FictionDict(UserDict):
     Fiction Dictionary Class: inherits from UserDict dict wrapper
     Description: used to create fiction dictionaries which can be saved to exported from json files
     '''
-    def __init__(self, name, data=defaultdict(lambda: 'Not yet defined'), **kwargs):
+
+    #Keep class generation generic do the fancy stuff later
+    def __init__(self, name="",  data=defaultdict(lambda: "Not defined yet"), **kwargs):
         UserDict.__init__(self)
         self.name=name
         self.update(data)
         self.update(kwargs)
+
+    @property
+    def name(self):
+        '''{
+        Object name getter
+        '''
+        return self.__name
+
+    @name.setter
+    def name(self, value):
+        '''
+        Object name setter
+        Set name
+        Todo: Implement checking
+        '''
+        self.__name=value
+    
+    #pseudo-data setter, data attribute inherited
+    def set_Data(self, value):
+        '''
+        Object dictionary setter
+        Destructive removes current value
+        '''
+        #Check that value is of type dictionary and replace data with value
+        #Otherwise return error.
+        try:
+            if isinstance(value, dict):
+                self.clear()
+                self.update(value)
+            else:
+                raise TypeError
+        except TypeError as te:
+            print("Expected a Dictionary got a ", type(value))
+
+
+
 
     def __add__(self, other):
         '''
@@ -23,7 +61,7 @@ class FictionDict(UserDict):
         (a+b).data={Dune dictionary, Neuromancer dictionary}
         If a word in a and b are the same the value in b will clobber the value in a
         '''
-        #Current dictionary initialization
+        #Current dictionary initialization 
         cDict=FictionDict(self.name, self.data)
         cDict.update(other)
         return cDict 
@@ -53,9 +91,6 @@ class FictionDict(UserDict):
                 print(word, "not in", cDict.name)
         return cDict
 
-
-
-
     def __repr__(self): 
         '''
         Official string repersentation
@@ -76,5 +111,9 @@ class FictionDict(UserDict):
         return buildstring
 
 
+    def addWord(self, wordDict):
+        '''
+        Adds a single word, or dictionary of words to the fiction dictionary.
+        '''
+        self.data.update(wordDict)
 
-    
