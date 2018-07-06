@@ -128,7 +128,7 @@ class FictionDict(UserDict):
         '''
         Checks for duplicate words
         '''
-        #Taking out exception of duplicate word allows it to be passed to the calling function
+        #Throwing raise outside of the try except allows it to be passed to other functions
         try:
             if  not isinstance(word, str):
                 raise  TypeError
