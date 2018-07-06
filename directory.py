@@ -3,7 +3,7 @@ import argparse
 #TODO
 #Build out command line arguements
 # Add interactive mode with loop for tab
-#    Add command keywords to interactive mode
+# Add command keywords to interactive mode
 # used to build the command line arguments
 def build_cmdline():
 	pass
