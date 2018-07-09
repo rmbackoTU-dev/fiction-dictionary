@@ -1,6 +1,6 @@
 import json, sys
 from collections import UserDict, defaultdict
-from fictDictErr import DuplicateWord, WordNotFoundErr
+from fictDictErr import DuplicateWord
 
 #TODO
 #Fix __Str__ to interate through definition list as well as word dictionary
@@ -158,3 +158,70 @@ class FictionDict(UserDict):
             self.update(word)
         except DuplicateWord as err2:
             print(err2.message)
+
+    def editWord(self, word, newDefinition, i=0):
+        '''
+        Searches for word by word Key and changes the i definition to newDefinition
+        If definition not in definition list add it to end of word.
+        '''
+        try:
+            if not isinstance(word, str):
+                raise TypeError
+            elif not isinstance(newDefinition, str):
+                raise TypeError
+            elif  word in self.keys():
+                if i < len(self.data[word]):
+                    self.data[word][i]=newDefinition
+                else:
+                    self.data[word].append(newDefinition)
+            else:
+                raise KeyError
+        except TypeError as te:
+            print('Expected String recieved a', type(word))
+        except KeyError as wnfe:
+            print('{0} was not found in the dictionary please add word before modifying'.format(word))
+            raise KeyError
+
+    def deleteWord(self, word):
+        '''
+        Search for word by Key removes the key from fhe dictionary. 
+        Automatic  Trash collection should take care of the rest
+        '''
+        try:
+            if not isinstance(word, str):
+                raise TypeError
+            self.pop(word)
+        except TypeError as te:
+            print('Expected String recieved a', type(word))
+        except KeyError as wnfe:
+            print('{0} was not found in the dictionary please add word before modifying'.format(word) )
+            raise KeyError
+
+    def importJSON(self):
+        '''
+        Import a diction object from a JSON so it can be shared, and edited by the native application
+        '''
+        pass
+
+    def exportJSON(self):
+        '''
+        Write dictionary objct to a JSON file so it can be saved and used by other applications
+        '''
+        pass
+
+    def copyDict(self):
+        '''
+        Creates a new fiction dictionary with the same data as the current deep copy
+        '''
+        copyDict=FictionDict(self.name,{})
+        for k, i in self.items():
+            tempDict={k: []}
+            for d in i:
+                tempDict[k].append(d)
+            copyDict.addWord(tempDict)
+        return copyDict
+
+    def buildWordFilter(self):
+        pass
+
+         
