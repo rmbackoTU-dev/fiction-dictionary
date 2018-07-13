@@ -1,6 +1,7 @@
-import json, sys
+import json, sys, os
 from collections import UserDict, defaultdict
 from fictDictErr import DuplicateWord
+import time
 
 #TODO
 #Fix __Str__ to interate through definition list as well as word dictionary
@@ -197,17 +198,38 @@ class FictionDict(UserDict):
             print('{0} was not found in the dictionary please add word before modifying'.format(word) )
             raise KeyError
 
-    def importJSON(self):
+    def importJSON(self, dictName, filename):
         '''
         Import a diction object from a JSON so it can be shared, and edited by the native application
+        Takes file name as absolute path in case file is not saved in dictionary directory
         '''
-        pass
+        try:
+            with open(filename, 'r+') as json_file:
+                importDict=json.load(json_file)
+                importFictDict=FictionDict(dictName, importDict)
+                json_file.close()
+                return importFictDict
+        except FileNotFoundError as fnfe:
+            print('There is no file found by the name {0}'.format(filename))
 
-    def exportJSON(self):
+
+    def exportJSON(self, filename=''):
         '''
         Write dictionary objct to a JSON file so it can be saved and used by other applications
+        Overwrites any previous json files by the same name. Write to the dictionaries directory
+        Use the Eastern timezone unless otherwise specified
         '''
-        pass
+    
+        timeStr=time.strftime('%Y%B%d')
+        dict_dir=os.path.dirname(os.path.realpath(__file__))+'/dictionaries/'
+        if  filename == '':
+            #the default filename should have the name of the dictionary YearMonthDay
+            filename="{0}{1}-{2}.json".format(dict_dir, self.name,timeStr)
+        else:
+            filename=dict_dir+filename+'.json'
+        with open(filename, 'w' ) as json_file:
+            json.dump(self.data, json_file)
+            json_file.close()
 
     def copyDict(self):
         '''
