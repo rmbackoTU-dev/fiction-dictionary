@@ -6,7 +6,7 @@ import time
 #TODO
  #Fix the formating on str
  #Fix add the dictionary name to the JSON file
-
+ #Implement Word Filter
 class FictionDict(UserDict):
     '''
     Fiction Dictionary Class: inherits from UserDict dict wrapper
@@ -23,7 +23,7 @@ class FictionDict(UserDict):
 
     @property
     def name(self):
-        '''{
+        '''
         Object name getter
         '''
         return self.__name

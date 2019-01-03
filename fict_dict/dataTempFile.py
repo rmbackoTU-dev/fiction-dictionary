@@ -2,31 +2,45 @@ import os, sys, datetime
 import json
 
 class dataTempFile :
+    
+    #directory does not get to be choose by user
+	self.localCacheDir=os.path.dirname(os.path.abspath(__file__))
 
-	localCacheDir=os.path.dirname(os.path.abspath(__file__))
-
-	def __init__():
+    #context is the current dictionary that the program is writing to 
+	def __init__(self):
 		self.temp_file='temp'
-		self.tempDir='/temp'
-        self.temp_abs=os.path.join(localCacheDir, tempDir, temp_file)
+        self.temp_abs=os.path.join(localCacheDir, 'temp', temp_file)
+        self.currentContext={}
 
-	def __init__(filename, dirName):
+	def __init__(self, filename):
        self.temp_file=filename
-       self.tempDir=dirName
-       self.temp_abs=os.path.join(localCacheDir, tempDirm temp_file)
+       self.temp_abs=os.path.join(localCacheDir, 'temp', temp_file)
+       self.currentContext={}
+    
+    def  __init__(self, filename, dictionary):
+        self.temp_file=filename
+        self.temp_abs=os.path.join(localCacheDir, 'temp', temp_file)
+        self.currentContext=dictionary
 
-	def updateFile(dictionary):
+    #Update file dumps the current dictionary the user is writing to a temp file
+	def updateFile(self):
 		pass
 
-	def  deleteFile():
+    #delete file deletes the current temp file, may attempt to call this after some condition automatically
+	def  deleteFile(self):
 		pass
 
-	def createFile():
+    #create file creates a new temp file if one does not exist already
+	def createFile(self):
+		pass
+    
+    #print dictionary at  outputs the file to a dictionary and reads in the dictionary pointed to by the key
+	def printDictionaryAt(self, key):
 		pass
 
-	def readKey():
-		pass
-
+    #set Context sets the current diectionary to the dictionary pointed to by the key
+    def setContext(self, key):
+    	pass
 
     #Check to see if file contains a key
 	def __contains__(key):

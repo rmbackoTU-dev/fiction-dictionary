@@ -1,7 +1,7 @@
 
 
 ## fiction-dictionary -
-#version 0.0.10 developmenet branch
+#version 0.0.11 developmenet branch
 #Note: this is an unfinished project and such does not have all of the forementioned feature.
 #This program creates and saves fictional words and their definitions in a searchable form
 
