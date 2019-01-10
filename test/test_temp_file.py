@@ -1,33 +1,39 @@
-from fiction_dictionary import dataTempFile
+from fict_dict.dataTempFile import dataFile
 import unittest
+import os
 
 #TODO
 '''
   Test implemented functions
 '''
+class test_temp_file(unittest.TestCase):
 
-class test_temp_file:
+    test_temp=dataFile()
 
-	def setUp(self):
-        test_temp=dataTempFile()
+    def setUp(self):
+        pass
 
     def tearDown(self):
-    	pass
+        pass
 
     def  test_createFile(self):
-    	self.fail()
+        try:
+            result=self.test_temp.createFile()
+            self.assertEqual(os.path.exists(self.test_temp.temp_abs), result)
+        except:
+            self.fail()
 
     def test_updateFile(self):
-    	self.fail()
+        self.fail()
 
     def test_deleteFile(self):
-    	self.fail()
+        self.fail()
 
     def test_printCurrent(self):
-    	self.fail()
+        self.fail()
 
     def  test_setContext(self):
-    	self.fail()
+        self.fail()
 
     def test_Contains(self):
-    	self.fail()
+        self.fail()

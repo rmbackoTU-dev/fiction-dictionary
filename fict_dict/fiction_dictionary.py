@@ -1,6 +1,6 @@
 import json, sys, os
 from collections import UserDict, defaultdict
-from exceptions import DuplicateWord
+from fict_dict.exceptions import DuplicateWord
 import time
 
 #TODO

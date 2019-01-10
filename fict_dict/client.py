@@ -1,6 +1,6 @@
 import sys, os, argparse, json, datetime
-from fiction_dictionary import FictionDict
-from exceptions import DuplicateWord
+from fict_dict.fiction_dictionary import FictionDict
+from fict_dict.exceptions import DuplicateWord
 '''
 Interface class makes fiction dictionary classes callable by different modes and unit test
 '''
@@ -78,7 +78,8 @@ class CommandLineLib():
         newDict=fDictCurrentDict + fDict[secondDictNume]
         decision='Err'
         while decision != 'New' or decision != 'Current':
-            desicion=input('Would you like to add to your current dictionary or add a new dictionary with the result? (New/Current)')
+            desicion=input('Would you like to add to your current dictionary or \
+                add a new dictionary with the result? (New/Current)')
             if decision == 'Current':
                 fDictCurrentDict=newDict
             elif decision == 'New':
@@ -108,27 +109,12 @@ class CommandLineLib():
             print('There is no file found by the name {0}'.format(filename))
         useAsCurrent='Err'
         while useAsCurrent != 'Y' and useAsCurrent !='N':
-            useAsCurrent=input("Would you like to use your imported dictionary as your current dictionary? (Y/N)")
+            useAsCurrent=input("Would you like to use your imported dictionary  \
+                as your current dictionary? (Y/N)")
             if useAsCurrent == "Y":
         	    fDictCurrent=len(fDict)
         
-    def createDictionaryCache(self, index):
-        #Simplest way to store definitions in-between sessions
-        try:
-            if not os.path.isdir(sys.path.append(os.path.dirname(__file__), cacheDir)):
-                os.mkdir(cache, 644)
-            else:
-                theDate=datetime.date()
-                cacheFileName="fdictCache_"+theDate.today().__str__()+index.__str__
-                #Create a cache file with the current date do not write
-                os.open(cacheFileName, 'a').close()
-        except OSError:
-            print("Creation of the  cache directory %s failed", cacheDir)
 
 
-    def updateCache(self, index):
-        #update current cache, with the dictionary at the given index
 
-    def cleanOldCache(self, mtime):
-        #clean cache files based on modify time of  mtime
 
