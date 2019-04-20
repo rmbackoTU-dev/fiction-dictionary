@@ -1,14 +1,16 @@
-from fict_dict.dataTempFile import dataFile
+from fict_dict.dataFile import DataFile
 import unittest
 import os
 
-#TODO
+# TODO
 '''
   Test implemented functions
 '''
-class test_temp_file(unittest.TestCase):
 
-    test_temp=dataFile()
+
+class TestTempFile(unittest.TestCase):
+
+    test_temp=DataFile()
     testDict={"A": ["The quick brown fox jumps over the lazy dog"]}
     testDictTwo={"Abba": ["A Band"], "Abba-Kadabra" : ["A magical command"]}
 
@@ -16,35 +18,35 @@ class test_temp_file(unittest.TestCase):
         pass
 
     def tearDown(self):
-        #Remove any temp files remaining after testing
-        if(os.path.isfile(self.test_temp.temp_abs)):
+        # Remove any temp files remaining after testing
+        if os.path.isfile(self.test_temp.temp_abs):
             os.remove(self.test_temp.temp_abs)
-        self.test_temp.setNewDictionary({}, "")
+        self.test_temp.set_new_dictionary({}, "")
 
-    def test_setNewDictionary(self):
-        self.test_temp.setNewDictionary(self.testDict, "testDict")
+    def test_set_new_dictionary(self):
+        self.test_temp.set_new_dictionary(self.testDict, "testDict")
         self.assertEqual(self.test_temp.currentContext, self.testDict)
 
-    def  test_createFile(self):
+    def test_create_file(self):
         try:
-            result_dict=self.createFile_Helper()
+            result_dict = self.createFile_Helper()
             self.assertTrue(os.path.isfile(self.test_temp.temp_abs))
-        except:
+        except IOError:
             self.fail("An unexpected FileError occured")
 
-    def test_createFile_WithFile(self):
+    def test_create_file_with_file(self):
         try:
             result_dict=self.createFile_Helper()
             self.assertEqual(result_dict["currentContext"], self.testDict)
-        except:
+        except IOError:
             self.fail("An unexpected FileError occured")
 
-    def test_createFile_Errormessage(self):
+    def test_createFile_error_message(self):
         try:
-            result_dict=self.test_temp.createFile()
-            expectedErrorMsg="No default dictionary context was set create a populated dictionary first"
-            self.assertEqual(result_dict["Error0"], expectedErrorMsg)
-        except:
+            result_dict=self.test_temp.create_file()
+            expected_error_msg="No default dictionary context was set create a populated dictionary first"
+            self.assertEqual(result_dict["Error0"], expected_error_msg)
+        except IOError:
             self.fail("An unexpected FileError occured")
 
     def test_updateFile(self):
@@ -56,7 +58,7 @@ class test_temp_file(unittest.TestCase):
     def test_printCurrentSingle(self):
         self.fail()
 
-    def test_printCurrentMutliple(self):
+    def test_printCurrentMultiple(self):
         self.fail()
 
     def  test_setContext(self):
@@ -66,6 +68,6 @@ class test_temp_file(unittest.TestCase):
         self.fail()
 
     def createFile_Helper(self):
-        self.test_temp.setNewDictionary(self.testDict, "testDict")
-        result=self.test_temp.createFile()
+        self.test_temp.set_new_dictionary(self.testDict, "testDict")
+        result = self.test_temp.create_file()
         return result

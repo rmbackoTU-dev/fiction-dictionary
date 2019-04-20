@@ -3,31 +3,30 @@ import sys
 from unittest import mock
 from fict_dict.client import CommandLineLib
 #TODO:
-#Test Interactive
-#Test Help
-#Test Create
-#Test Select
-#Test Remove
-#Test Delete
-#Test AddWord
-#Test EditWord
-#Test listDicts
-#Test Save
-#Test printWord
-#Test printDict
-#Test dictionaryAdd
-#Test dictionaryCompare
-#Test importJSON
-#Implement and Test CommandLineMode
-#Implement and test Search
-
+# Test Interactive
+# Test Help
+# Test Create
+# Test Select
+# Test Remove
+# Test Delete
+# Test AddWord
+# Test EditWord
+# Test listDicts
+# Test Save
+# Test printWord
+# Test printDict
+# Test dictionaryAdd
+# Test dictionaryCompare
+# Test importJSON
+# Implement and Test CommandLineMode
+# Implement and test Search
 
 
 #Replacement output redirection
-class Output_redirect():
+class OutputRedirect():
 
     def __init__(self):
-        self.data=[]
+        self.data = []
 
     def write(self, s):
         self.data.append(s)
@@ -39,11 +38,10 @@ class Output_redirect():
         del self.data[:]
 
 
-
-class test_menu(unittest.TestCase):
-    stdout_redirect=Output_redirect()
+class TestMenu(unittest.TestCase):
+    stdout_redirect = OutputRedirect()
     #A new client
-    testCLIClient=CommandLineLib()
+    testCLIClient = CommandLineLib()
 
     def setUp(self):
         pass
@@ -54,12 +52,11 @@ class test_menu(unittest.TestCase):
     #Add endlines to expected out
     def format_Expected(self, optDict):
         #Quick and easy dict value to list via comprehensions 
-        expected_out=[i for  i  in optDict.values()]
+        expected_out = [i for i in optDict.values()]
         for i in range(len(expected_out)):
-            current=expected_out[i]
-            expected_out[i]=current+'\n'
+            current = expected_out[i]
+            expected_out[i] = current+'\n'
         return expected_out
-
 
     def test_InteractiveLong(self, mock_print):
         self.fail('Test has not been implemented')
@@ -77,10 +74,10 @@ class test_menu(unittest.TestCase):
         self.fail('Test has not been implemented')
 
     def test_helpSysExit(self):
-    	self.fail('Test has not been implemented')
+        self.fail('Test has not been implemented')
 
     def test_Import(self):
-    	self.fail('Test has not been implemented')
+        self.fail('Test has not been implemented')
 
     def test_Create(self):
         self.fail('Test has not been implemented')
@@ -95,10 +92,10 @@ class test_menu(unittest.TestCase):
         self.fail('Test has not been implemented')
 
     def test_Edit(self):
-    	self.fail('Test has not been implemented')
+        self.fail('Test has not been implemented')
 
     def test_list(self):
-    	self.fail('Test has not been implemented')
+        self.fail('Test has not been implemented')
 
     def test_save(self):
         self.fail('Test has not been implemented')
@@ -110,10 +107,10 @@ class test_menu(unittest.TestCase):
         self.fail('Test has not been implemented')
 
     def test_dictionaryAdd(self):
-    	self.fail('Test has not been implemented')
+        self.fail('Test has not been implemented')
 
     def test_dictionaryCompare(self):
-    	self.fail('Test has not been implemented')
+        self.fail('Test has not been implemented')
 
     def test_Search(self):
-    	self.fail('Test has not been implemented')
+        self.fail('Test has not been implemented')

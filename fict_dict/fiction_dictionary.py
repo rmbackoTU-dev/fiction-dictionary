@@ -23,26 +23,19 @@ class FictionDict(UserDict):
 
     @property
     def name(self):
-        '''
-        Object name getter
-        '''
         return self.__name
 
     @name.setter
     def name(self, value):
-        '''
-        Object name setter
-        Set name
-        Todo: Implement checking
-        '''
+        #Todo: Implement checking
         self.__name=value
 
     #pseudo-data setter, data attribute inherited
-    def set_Data(self, value):
-        '''
+    '''
         Object dictionary setter
         Destructive removes current value
-        '''
+    '''
+    def set_Data(self, value):
         #Check that value is of type dictionary and replace data with value
         #Otherwise return error.
         try:
@@ -53,8 +46,7 @@ class FictionDict(UserDict):
         except TypeError as te:
             print("Expected a List got a ", type(value))
 
-    def __add__(self, other):
-        '''
+    '''
         Implementation of '+' operation uses first dictionary and appends data to it.
         Keeps the first dictionarys name
         example:
@@ -62,15 +54,15 @@ class FictionDict(UserDict):
         (a+b).name='Dune'
         (a+b).data={Dune dictionary, Neuromancer dictionary}
         If a word in a and b are the same the value in b will clobber the value in a
-        '''
+    '''
+    def __add__(self, other):
         #Current dictionary initialization
         #check the internal data should be type list, other should be type dictionary
         cDict=FictionDict(self.name, self.data)
         cDict.update(other)
         return cDict 
-    
-    def __sub__(self, other):
-        '''
+
+    '''
         Implementation of '-' operation deletes elements of the second dictionary from the first
         Keeps the first dicionarys name
         example
@@ -80,7 +72,8 @@ class FictionDict(UserDict):
         Does not delete b.item from a if only b.key== a.key
         Only deletes b.item if b.key==a.key && a.val == b.vall
         Returns the dictionary without the deleted elements
-        '''
+    '''
+    def __sub__(self, other):
         #current dictionary initialization
         cDict=FictionDict(self.name, self.data)
         for word, definition in other.items():
@@ -101,13 +94,13 @@ class FictionDict(UserDict):
         '''
         return 'FictionDict('+self.name+': '+self.data.__repr__()+')'
 
-    def __str__(self):
         '''
         Informal string repersentation
         Implementation of the print method.
         Makes print of fiction Dictionary, by adding line feeds to each word
         Also adds tab between word and definition
         '''
+    def __str__(self):
         buildstring=''
         for word in self.data:
             tmpStr=self.wordToString(word)
@@ -132,10 +125,10 @@ class FictionDict(UserDict):
         except KeyError as ke:
             print('{0} was not found in  this dictionary.'.format(word))
 
-    def isDuplicateWord(self, word):
-        '''
+    '''
         Checks for duplicate words
-        '''
+    '''
+    def isDuplicateWord(self, word):
         #Throwing raise outside of the try except allows it to be passed to other functions
         try:
             if  not isinstance(word, str):
@@ -151,10 +144,10 @@ class FictionDict(UserDict):
             print(de.message)
             raise DuplicateWord(word)
 
-    def addWord(self, word):
-        '''
+    '''
         Adds a single word, or dictionary of words to the fiction dictionary.
-        '''
+    '''
+    def addWord(self, word):
         try:
             if not isinstance(word, dict):
                 raise TypeError
@@ -171,11 +164,11 @@ class FictionDict(UserDict):
         except DuplicateWord as err2:
             print(err2.message)
 
-    def editWord(self, word, newDefinition, i=0):
-        '''
+    '''
         Searches for word by word Key and changes the i definition to newDefinition
         If definition not in definition list add it to end of word.
-        '''
+    '''
+    def editWord(self, word, newDefinition, i=0):
         try:
             if not isinstance(word, str):
                 raise TypeError
@@ -193,12 +186,11 @@ class FictionDict(UserDict):
         except KeyError as wnfe:
             print('{0} was not found in the dictionary please add word before modifying'.format(word))
             raise KeyError
-
-    def deleteWord(self, word):
-        '''
+    '''
         Search for word by Key removes the key from fhe dictionary. 
         Automatic  Trash collection should take care of the rest
-        '''
+    '''
+    def deleteWord(self, word):
         try:
             if not isinstance(word, str):
                 raise TypeError
@@ -209,14 +201,14 @@ class FictionDict(UserDict):
             print('{0} was not found in the dictionary please add word before modifying'.format(word) )
             raise KeyError
 
-    def exportJSON(self, dict_dir, filename=''):
-        '''
+    '''
         Write dictionary objct to a JSON file so it can be saved and used by other applications
         Overwrites any previous json files by the same name. Write to the dictionaries directory
         Use the Eastern timezone unless otherwise specified
 
         Change: Added dict_dir to function so it could be specified at top level directory
-        '''
+    '''
+    def exportJSON(self, dict_dir, filename=''):
         timeStr=time.strftime('%Y%B%d')
         if  filename == '':
             #the default filename should have the name of the dictionary YearMonthDay
@@ -227,10 +219,10 @@ class FictionDict(UserDict):
             json.dump(self.data, json_file)
             json_file.close()
 
-    def copyDict(self):
-        '''
+    '''
         Creates a new fiction dictionary with the same data as the current deep copy
-        '''
+    '''
+    def copyDict(self):
         copyDict=FictionDict(self.name,{})
         for k, i in self.items():
             tempDict={k: []}
@@ -239,7 +231,16 @@ class FictionDict(UserDict):
             copyDict.addWord(tempDict)
         return copyDict
 
+    '''
+        Function creates a iterative filter which is used to parse the dictionary for
+        matches
+    '''
     def buildWordFilter(self):
         pass
 
-         
+    '''
+        Uses the filter returned by build word filter to make a list of matching
+        dictionary words
+    '''
+    def buildSearchHits(self):
+        pass

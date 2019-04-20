@@ -4,115 +4,115 @@ from fict_dict.exceptions import DuplicateWord
 '''
 Interface class makes fiction dictionary classes callable by different modes and unit test
 '''
-class CommandLineLib():
-     
-	#class variables:
-    fDict=[]
-    fDictCount=0
-    fDictCurrent=0
-    cacheDir='/FictionDictCache'
 
-    def __init__(self, dicDir=''):
-        self. dictionaryDirectory=dicDir
+
+class CommandLineLib:
+     
+    #class variables:
+    fDict = []
+    fDictCount = 0
+    fDictCurrent = 0
+    cacheDir = '/FictionDictCache'
+
+    def __init__(self, dicDir = ''):
+        self. dictionaryDirectory = dicDir
 
     @property
     def fDictCurrentDict(self):
-    	return fDict[fDictCurrent] 
+        return self.fDict[self.fDictCurrent]
 
     @property
     def dictionaryDirectory(self):
-    	return self._dictionaryDirectory
+        return self._dictionaryDirectory
     
     @dictionaryDirectory.setter
     def dictionaryDirectory(self, dicDir):
-    	'''
-		TODO:
-		Add error checking to  make sure location exist
-    	'''
-    	self.__dictionaryDirectory=dicDir
+        #TODO:
+        #Add error checking to  make sure location exist
+        self.__dictionaryDirectory = dicDir
 
     def create(self, name):
-        fDict[fDictCount]=[FictionDict(name, {})]
-        fDictCount+=1
+        self.fDict[self.fDictCount] = [FictionDict(name, {})]
+        self.fDictCount += 1
 
     def select(self, num):
-	    fDictCurrent=num
+        self.fDictCurrent = num
 
     def remove(self, word):
-	    self.fDictCurrentDict.deleteWord(word)
+        self.fDictCurrentDict.deleteWord(word)
 
     def delete(self):
-        curr=fDictCurrent
-        while fDict[curr+1] != None:
+        curr = self.fDictCurrent
+        while self.fDict[curr+1] is not None:
             print(curr)
-            print(fDict[curr].name())
-            fDict[curr]=curr+1
+            print(self.fDict[curr].name())
+            self.fDict[curr]=curr+1
 
-    def addWord(self, word, definitions):
-	    wordDict={word:[]}
-	    for i in definitions:
-		    wordDict[0].append(i)
-	        #fDict[fDictCurrenti].addWord(wordDict)
+    def add_word(self, word, definitions):
+        wordDict={word:[]}
+        for i in definitions:
+            wordDict[0].append(i)
+            #fDict[fDictCurrent].addWord(wordDict)
 
-    def editWord(self, word, definition, defNum=0):
-	    fDictCurrentDict.editWord(word, definition, defNum)
+    def edit_word(self, word, definition, defNum=0):
+        self.fDictCurrentDict.edit_word(word, definition, defNum)
 
-    def listDicts(self):
-	    for i, d in fDict:
-		    print('{0}: \t {1}'.format(i, d.name()))
+    def list_dictionaries(self):
+        for i, d in fDict:
+            print('{0}: \t {1}'.format(i, d.name()))
 
     def save(self, filename=''):
-	    if filename =='':
-		    filename=self.fictDict.name
-	    completeFN=self.dictionaryDirectory+filename
-	    fDictCurrentDict.exportJSON(filename)
+        if filename == '':
+            filename = self.fictDict.name
+        completeFN = self.dictionaryDirectory+filename
+        self.fDictCurrentDict.exportJSON(filename)
 
     def printDict(self):
-	    print(fDictCurrent)
+        print(self.fDictCurrent)
 
     def printWord(self, word):
-	    printStr=fDictCurrentDict.wordToString(word)
-	    print(printStr)
+        printStr = self.fDictCurrentDict.wordToString(word)
+        print(printStr)
 
-    def dictionaryAdd(self, secondDictNum):
-        newDict=fDictCurrentDict + fDict[secondDictNume]
-        decision='Err'
+    def dictionary_add(self, secondDictNum):
+        new_dict = self.fDictCurrentDict + self.fDict[secondDictNum]
+        decision = 'Err'
         while decision != 'New' or decision != 'Current':
-            desicion=input('Would you like to add to your current dictionary or \
+            decision = input('Would you like to add to your current dictionary or \
                 add a new dictionary with the result? (New/Current)')
             if decision == 'Current':
-                fDictCurrentDict=newDict
+                f_dict_current_dict = new_dict
             elif decision == 'New':
-                fDict.append(newDict)
+                self.fDict.append(new_dict)
 
     def dictDiff(self, secondDictNum, storeDifference=False):
-	    differenceDict=fDictCurrentDict-fDict[secondDictNum]
-	    if storeDifference:
-		    fDict.append(dictionaryDirectory)
-	    else:
-		    print(differenceDict)
+        differenceDict=self.fDictCurrentDict-self.fDict[secondDictNum]
+        if storeDifference:
+            self.fDict.append(self.dictionaryDirectory)
+        else:
+            print(differenceDict)
 
-    def importJSON(self, dictName, filename):
-        '''
-        Import a diction object from a JSON so it can be shared, and edited by the native application
-        Takes file name as absolute path in case file is not saved in dictionary directory
-         Better suited as menu item since importing a JSON should not depend on an existing dictionary
-        Since there is no existing dictionary
-        '''
+    '''
+    Import a diction object from a JSON so it can be shared, and edited by the native application
+    Takes file name as absolute path in case file is not saved in dictionary directory
+    Better suited as menu item since importing a JSON should not depend on an existing dictionary
+    Since there is no existing dictionary
+    '''
+    def import_JSON(self, dictName, filename):
         try:
             with open(filename, 'r+') as json_file:
-                importDict=json.load(json_file)
-                importFictDict=FictionDict(dictName, importDict)
+                import_dict = json.load(json_file)
+                import_fict_dict = FictionDict(dictName, import_dict)
                 json_file.close()
-                fDict.append(importFictDict)
+                self.fDict.append(import_fict_dict)
         except FileNotFoundError as fnfe:
             print('There is no file found by the name {0}'.format(filename))
-        useAsCurrent='Err'
-        while useAsCurrent != 'Y' and useAsCurrent !='N':
-            useAsCurrent=input("Would you like to use your imported dictionary  \
+        use_as_current = 'Err'
+        while use_as_current != 'Y' and use_as_current != 'N':
+            use_as_current = input("Would you like to use your imported dictionary  \
                 as your current dictionary? (Y/N)")
-            if useAsCurrent == "Y":
-        	    fDictCurrent=len(fDict)
+            if use_as_current == "Y":
+                self.fDictCurrent = len(self.fDict)
         
 
 
