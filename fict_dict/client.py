@@ -6,6 +6,7 @@ from fict_dict.dataFile import dataFile
 '''
 Client class used to call use functionality of fiction dictionary
 '''
+
 class fictDictClient():
     '''
     todo:
@@ -68,5 +69,7 @@ class fictDictClient():
         importDict: FictionDict=oldDataFile.importJSON()
         exportDict=importDict.copyDict()
         newDataFile.exportJSON(exportDict)
+
+
 
 

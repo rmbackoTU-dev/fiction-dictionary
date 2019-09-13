@@ -15,7 +15,6 @@ class FictionDict(UserDict):
     Redefine key error continue to clean up error handling
     '''
 
-
     #Keep class generation generic do the fancy stuff later
     def __init__(self, name="",  data=dict(), **kwargs):
         UserDict.__init__(self)
@@ -25,9 +24,6 @@ class FictionDict(UserDict):
 
     @property
     def name(self):
-        '''
-        Object name getter
-        '''
         return self.__name
 
     @name.setter
@@ -36,17 +32,16 @@ class FictionDict(UserDict):
         Object name setter
         Set name
         '''
-
         if not value:
             raise ValueError("Name must be defined")
         self.__name=value
 
     #pseudo-data setter, data attribute inherited
-    def set_Data(self, value):
-        '''
+    '''
         Object dictionary setter
         Destructive removes current value
-        '''
+    '''
+    def set_Data(self, value):
         #Check that value is of type dictionary and replace data with value
         #Otherwise return error.
         try:
@@ -83,7 +78,7 @@ class FictionDict(UserDict):
         cDict=FictionDict(self.name, self.data)
         cDict.update(other)
         return cDict 
-    
+
     def __sub__(self, other):
         '''
         Implementation of '-' operation deletes elements of the second dictionary from the first
@@ -123,12 +118,14 @@ class FictionDict(UserDict):
         '''
         return 'FictionDict('+self.name+': '+self.data.__repr__()+')'
 
+
     def __str__(self):
         '''
-        Informal string repersentation
-        Implementation of the print method.
-        Makes print of fiction Dictionary, by adding line feeds to each word
+        Informal String repersentation
+        Implementation of the print method
+        Makes print of fiction dictionary, by adding line feeds to each word
         Also adds tab between word and definition
+        :return:
         '''
         buildstring=''
         for word in self.data:
@@ -166,7 +163,7 @@ class FictionDict(UserDict):
     def isDuplicateWord(self, word):
         '''
         Checks for duplicate words
-        '''
+         '''
         #Throwing raise outside of the try except allows it to be passed to other functions
         try:
             if not word:
@@ -234,7 +231,7 @@ class FictionDict(UserDict):
 
     def deleteWord(self, word):
         '''
-        Search for word by Key removes the key from fhe dictionary. 
+        Search for word by Key removes the key from fhe dictionary.
         Automatic  Trash collection should take care of the rest
         '''
         try:
@@ -258,3 +255,17 @@ class FictionDict(UserDict):
                 tempDict[k].append(d)
             copyDict.addWord(tempDict)
         return copyDict
+
+    def buildWordFilter(self):
+        '''
+        Function creates a iterative filter which is used to parse the dictionary for
+        matches
+        '''
+        pass
+
+    def buildSearchHits(self):
+        '''
+        Uses the filter returned by build word filter to make a list of matching
+        dictionary words
+        '''
+        pass

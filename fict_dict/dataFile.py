@@ -1,5 +1,5 @@
 import json, os
-from fiction_dictionary import FictionDict
+from fict_dict.fiction_dictionary import FictionDict
 
 
 class dataFile():
