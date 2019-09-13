@@ -11,6 +11,8 @@ class FictionDict(UserDict):
     '''
     Fiction Dictionary Class: inherits from UserDict dict wrapper
     Description: used to create fiction dictionaries which can be saved to exported from json files
+    todo:
+    Redefine key error continue to clean up error handling
     '''
 
 
@@ -33,8 +35,10 @@ class FictionDict(UserDict):
         '''
         Object name setter
         Set name
-        Todo: Implement checking
         '''
+
+        if not value:
+            raise ValueError("Name must be defined")
         self.__name=value
 
     #pseudo-data setter, data attribute inherited
@@ -46,6 +50,9 @@ class FictionDict(UserDict):
         #Check that value is of type dictionary and replace data with value
         #Otherwise return error.
         try:
+            if not value:
+                raise ValueError("Value must be defined")
+
             if not isinstance(value, dict):
                 raise TypeError
             self.clear()
@@ -65,6 +72,14 @@ class FictionDict(UserDict):
         '''
         #Current dictionary initialization
         #check the internal data should be type list, other should be type dictionary
+
+        if not other:
+            raise ValueError("Other dictionary "+\
+                             " must be defined")
+        elif not isinstance(other, FictionDict):
+            raise TypeError("Other value "+\
+                             " must be a FictionDictionary")
+
         cDict=FictionDict(self.name, self.data)
         cDict.update(other)
         return cDict 
@@ -82,6 +97,13 @@ class FictionDict(UserDict):
         Returns the dictionary without the deleted elements
         '''
         #current dictionary initialization
+        if not other:
+            raise ValueError("Other dictionary "+\
+                             " must be defined")
+        elif not isinstance(other, FictionDict):
+            raise TypeError("Other value "+\
+                             " must be a FictionDictionary")
+
         cDict=FictionDict(self.name, self.data)
         for word, definition in other.items():
             if  word in cDict:
@@ -115,9 +137,18 @@ class FictionDict(UserDict):
         return buildstring
 
     def wordToString(self, word):
+        '''
+        Method to get the string repersentation
+        of a word and its definition
+        :param word:
+        :return: string containing word and definition
+        '''
+
         try:
-            if not isinstance(word, str):
-                raise TypeError
+            if not word:
+                raise ValueError("Word can not be empty, must be defined.")
+            elif not isinstance(word, str):
+                raise TypeError("Word must be a String")
             wordDefs=self.data[word]
             buildString='{0}:'.format(word)
             index=0
@@ -138,8 +169,10 @@ class FictionDict(UserDict):
         '''
         #Throwing raise outside of the try except allows it to be passed to other functions
         try:
-            if  not isinstance(word, str):
-                raise  TypeError
+            if not word:
+                raise ValueError("Word must be defined")
+            elif  not isinstance(word, str):
+                raise  TypeError("Word must be a String")
             for w in self.keys():
                 if w == word:
                     raise DuplicateWord(word)
@@ -156,15 +189,17 @@ class FictionDict(UserDict):
         Adds a single word, or dictionary of words to the fiction dictionary.
         '''
         try:
-            if not isinstance(word, dict):
-                raise TypeError
+            if not word:
+                raise ValueError("Word must be defined")
+            elif not isinstance(word, dict):
+                raise TypeError("Word must be a String")
         except TypeError as err1:
             print('Expected Dictionary recieved a', type(word))        
         try:
             tempWord=dict()
             for key, val in word.items():
                 if self.isDuplicateWord(key):
-                    raise DuplicateWord
+                    raise DuplicateWord("Word already found in dictionary")
                     return None
                 tempWord[key]=val
                 self.update(tempWord)      
@@ -177,10 +212,13 @@ class FictionDict(UserDict):
         If definition not in definition list add it to end of word.
         '''
         try:
-            if not isinstance(word, str):
-                raise TypeError
+            if not word or newDefinition:
+                nullValue=("word", "newDefinition")[ word is None]
+                raise ValueError(nullValue+ "must be defined")
+            elif not isinstance(word, str):
+                raise TypeError("Word must be a String")
             elif not isinstance(newDefinition, str):
-                raise TypeError
+                raise TypeError("Word must be a String")
             elif  word in self.keys():
                 if i < len(self.data[word]):
                     self.data[word][i]=newDefinition
@@ -201,31 +239,13 @@ class FictionDict(UserDict):
         '''
         try:
             if not isinstance(word, str):
-                raise TypeError
+                raise TypeError("Word must be a String.")
             self.pop(word)
         except TypeError as te:
             print('Expected String recieved a', type(word))
         except KeyError as wnfe:
             print('{0} was not found in the dictionary please add word before modifying'.format(word) )
             raise KeyError
-
-    def exportJSON(self, dict_dir, filename=''):
-        '''
-        Write dictionary objct to a JSON file so it can be saved and used by other applications
-        Overwrites any previous json files by the same name. Write to the dictionaries directory
-        Use the Eastern timezone unless otherwise specified
-
-        Change: Added dict_dir to function so it could be specified at top level directory
-        '''
-        timeStr=time.strftime('%Y%B%d')
-        if  filename == '':
-            #the default filename should have the name of the dictionary YearMonthDay
-            filename="{0}{1}-{2}.json".format(dict_dir, self.name,timeStr)
-        else:
-            filename=dict_dir+filename+'.json'
-        with open(filename, 'w' ) as json_file:
-            json.dump(self.data, json_file)
-            json_file.close()
 
     def copyDict(self):
         '''
@@ -238,8 +258,3 @@ class FictionDict(UserDict):
                 tempDict[k].append(d)
             copyDict.addWord(tempDict)
         return copyDict
-
-    def buildWordFilter(self):
-        pass
-
-         

@@ -13,7 +13,8 @@ class test_temp_file(unittest.TestCase):
     testDictTwo={"Abba": ["A Band"], "Abba-Kadabra" : ["A magical command"]}
 
     def setUp(self):
-        pass
+        self.test_temp.setNewDictionary(self.testDict, "A")
+
 
     def tearDown(self):
         #Remove any temp files remaining after testing
@@ -47,17 +48,29 @@ class test_temp_file(unittest.TestCase):
         except:
             self.fail("An unexpected FileError occured")
 
+    #file should contain  second dictionary after update set up file with first dict
+    #Then add second dict, and check for both
     def test_updateFile(self):
+        self.fail()
+
+    def test_dictionaryString(self):
         self.fail()
 
     def test_deleteFile(self):
         self.fail()
 
-    def test_printCurrentSingle(self):
-        self.fail()
+    def test_toStringSingle(self):
+        expectedValue="Dictionary name: TestA\nA: The quick brown fox jumps over the lazy dog.\n"
+        actualValue=test_temp.currentContext_toString()
+        assertEqual(expectedValue, actualValue)
 
-    def test_printCurrentMutliple(self):
-        self.fail()
+    def test_key_toString(self):
+        self.test_temp.setNewDictionary(self.testDictTwo, "B")
+        self.test_temp.setContext("A")
+        expectedValue="Dictionary name: TestB\n \
+        Abba: A Band\n Abba-Kadabra: A magical command\n"
+        actualValue=test_temp.currentContext_toString("B")
+
 
     def  test_setContext(self):
         self.fail()
@@ -66,6 +79,6 @@ class test_temp_file(unittest.TestCase):
         self.fail()
 
     def createFile_Helper(self):
-        self.test_temp.setNewDictionary(self.testDict, "testDict")
+        self.test_temp.setNewDictionary(self.testDictTwo, "B")
         result=self.test_temp.createFile()
         return result

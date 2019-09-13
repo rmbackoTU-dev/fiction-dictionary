@@ -1,120 +1,72 @@
 import sys, os, argparse, json, datetime
 from fict_dict.fiction_dictionary import FictionDict
 from fict_dict.exceptions import DuplicateWord
+from fict_dict.dataFile import dataFile
+
 '''
-Interface class makes fiction dictionary classes callable by different modes and unit test
+Client class used to call use functionality of fiction dictionary
 '''
-class CommandLineLib():
-     
+class fictDictClient():
+    '''
+    todo:
+    create a dictionary
+    delete a dictionary
+    edit a dictionary
+    add two dictionaries
+    get the difference between two dictionaries
+    search a single dictionary
+    copy a dictionary to a new file
+    '''
+
 	#class variables:
-    fDict=[]
-    fDictCount=0
-    fDictCurrent=0
     cacheDir='/FictionDictCache'
 
-    def __init__(self, dicDir=''):
-        self. dictionaryDirectory=dicDir
 
-    @property
-    def fDictCurrentDict(self):
-    	return fDict[fDictCurrent] 
+    def __init__(self):
+        pid=os.getpid()
 
-    @property
-    def dictionaryDirectory(self):
-    	return self._dictionaryDirectory
-    
-    @dictionaryDirectory.setter
-    def dictionaryDirectory(self, dicDir):
-    	'''
-		TODO:
-		Add error checking to  make sure location exist
-    	'''
-    	self.__dictionaryDirectory=dicDir
 
-    def create(self, name):
-        fDict[fDictCount]=[FictionDict(name, {})]
-        fDictCount+=1
+    def createDictionaryName(self, dictName, fileName):
+        newDict=FictionDict(dictName)
+        newDataFile=dataFile(self.pid, fileName)
+        newDataFile.exportJSON(newDict)
 
-    def select(self, num):
-	    fDictCurrent=num
-
-    def remove(self, word):
-	    self.fDictCurrentDict.deleteWord(word)
-
-    def delete(self):
-        curr=fDictCurrent
-        while fDict[curr+1] != None:
-            print(curr)
-            print(fDict[curr].name())
-            fDict[curr]=curr+1
-
-    def addWord(self, word, definitions):
-	    wordDict={word:[]}
-	    for i in definitions:
-		    wordDict[0].append(i)
-	        #fDict[fDictCurrenti].addWord(wordDict)
-
-    def editWord(self, word, definition, defNum=0):
-	    fDictCurrentDict.editWord(word, definition, defNum)
-
-    def listDicts(self):
-	    for i, d in fDict:
-		    print('{0}: \t {1}'.format(i, d.name()))
-
-    def save(self, filename=''):
-	    if filename =='':
-		    filename=self.fictDict.name
-	    completeFN=self.dictionaryDirectory+filename
-	    fDictCurrentDict.exportJSON(filename)
-
-    def printDict(self):
-	    print(fDictCurrent)
-
-    def printWord(self, word):
-	    printStr=fDictCurrentDict.wordToString(word)
-	    print(printStr)
-
-    def dictionaryAdd(self, secondDictNum):
-        newDict=fDictCurrentDict + fDict[secondDictNume]
-        decision='Err'
-        while decision != 'New' or decision != 'Current':
-            desicion=input('Would you like to add to your current dictionary or \
-                add a new dictionary with the result? (New/Current)')
-            if decision == 'Current':
-                fDictCurrentDict=newDict
-            elif decision == 'New':
-                fDict.append(newDict)
-
-    def dictDiff(self, secondDictNum, storeDifference=False):
-	    differenceDict=fDictCurrentDict-fDict[secondDictNum]
-	    if storeDifference:
-		    fDict.append(dictionaryDirectory)
-	    else:
-		    print(differenceDict)
-
-    def importJSON(self, dictName, filename):
+    def deleteDictionary(self, fileName):
         '''
-        Import a diction object from a JSON so it can be shared, and edited by the native application
-        Takes file name as absolute path in case file is not saved in dictionary directory
-         Better suited as menu item since importing a JSON should not depend on an existing dictionary
-        Since there is no existing dictionary
+        Delete a dictionary file from the system
+        :param fileName
         '''
-        try:
-            with open(filename, 'r+') as json_file:
-                importDict=json.load(json_file)
-                importFictDict=FictionDict(dictName, importDict)
-                json_file.close()
-                fDict.append(importFictDict)
-        except FileNotFoundError as fnfe:
-            print('There is no file found by the name {0}'.format(filename))
-        useAsCurrent='Err'
-        while useAsCurrent != 'Y' and useAsCurrent !='N':
-            useAsCurrent=input("Would you like to use your imported dictionary  \
-                as your current dictionary? (Y/N)")
-            if useAsCurrent == "Y":
-        	    fDictCurrent=len(fDict)
-        
+        newDataFile=dataFile(self.pid, fileName)
+        newDataFile.deleteJSON()
+
+    def editDictionary(self, fileName, word, definition, synonm):
+        newDataFile=dataFile(self.pid, fileName)
+        importedDictionary: FictionDict=newDataFile.importJSON()
+        importedDictionary.editWord(word,definition, synonm)
+        newDataFile.exportOverwriteJSON(importedDictionary)
 
 
+    def addDictionaries(self, fileNameOne, fileNameTwo):
+        newDataFileOne=dataFile(self.pid, fileNameOne)
+        newDataFileTwo=dataFile(self.pid, fileNameTwo)
+        importDictionaryOne: FictionDict=newDataFileOne.importJSON()
+        importDictionaryTwo: FictionDict=newDataFileTwo.importJSON()
+        sumDict=importDictionaryOne+importDictionaryTwo
+        newDataFileOne.exportOverwriteJSON(sumDict)
+
+    def diffDictionaries(self, fileNameOne, fileNameTwo):
+        newDataFileOne=dataFile(self.pid, fileNameOne)
+        newDataFileTwo=dataFile(self.pid, fileNameTwo)
+        importDictionaryOne: FictionDict=newDataFileOne.importJSON()
+        importDictionaryTwo: FictionDict=newDataFileTwo.importJSON()
+        diffDict=importDictionaryOne-importDictionaryTwo
+        newDataFileOne.exportOverwriteJSON(diffDict)
+
+    def copyDictionaries(self, srcFile, destFile):
+        oldDataFile=dataFile(self.pid, srcFile)
+        newDataFile=dataFile(self.pid, destFile)
+        importDict: FictionDict=oldDataFile.importJSON()
+        exportDict=importDict.copyDict()
+        newDataFile.exportJSON(exportDict)
 
 
