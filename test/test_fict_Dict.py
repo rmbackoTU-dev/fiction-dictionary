@@ -175,10 +175,12 @@ class TestDictionary(unittest.TestCase):
         self.testD = self.testA.copyDict()
         self.assertEqual(self.testA.data, self.testD.data)
 
+    '''
     def test_importJSON(self):
         self.testA.exportJSON('TestA', '/home/ryan/dev/fiction_dictionary/dictionaries/')
         self.testD.importJSON('TestD', '/home/ryan/dev/fiction_dictionary/dictionaries/TestA.json')
         self.assertEqual(self.testA.data, self.testD.fDict.pop.data)
+    '''
 
     def test_printWord(self):
         test_word='TCWord1'
@@ -186,10 +188,10 @@ class TestDictionary(unittest.TestCase):
         test_word_len = len(test_word)
         comp_str="TCWord1:       \tcW1Def1\ncW1Def2\n"
         self.assertEqual(comp_str, test_str)
-
+    '''
     def test_buildFilter(self):
         self.fail("Not yet implemented --building a search Filter")
-
+    '''
     def test_duplicateWord_typeErr_int(self):
         self.assertRaises(TypeError, self.testA.isDuplicateWord, 1)
 
@@ -231,32 +233,6 @@ class TestDictionary(unittest.TestCase):
 
     def test_deleteWord_typeErr_dict(self):
         self.assertRaises(TypeError, self.testA.deleteWord, {1: 'bar'})
-
-    '''
-    Test that after bash is closed  via exit from bash  thread is killed
-    '''
-    def test_tempThreadTearDown(self):
-        self.fail('Implement Thread tear down and signal functions')
-
-    '''
-    Test that while temp process is open and has not received SIGINT from bash 
-    that dictionary still has access to its temporary cache file
-    '''
-    def test_tempFileAcess(self):
-        self.fail('Implement temp file open functions. Call as part of tempt thread stand up')
-
-    '''
-    Test that when temp thread is up it can be called by main program
-    '''
-    def test_tempTreadSetup(self):
-        self.fail('Implement temp file open functions. Call as part of tempt thread stand up')
-
-    ''''
-    Test that when thread is closed via exit from bash, that file is closed and is not accessible
-    '''
-    def test_tempFileTearDown(self):
-        self.fail('Implement temp file open functions. Call as part of tempt thread stand up')
-
 
 if __name__ == '__main__':
     unittest.main()

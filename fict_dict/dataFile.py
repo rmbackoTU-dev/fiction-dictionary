@@ -50,14 +50,14 @@ class dataFile():
                 importData: FictionDict=json.load(json_file)
                 json_file.close()
             return importData
-        except:
+        except IOError as ioe:
             print('An error occured while opening {0}'.format(self.pathname))
 
     def deleteJSON(self):
         try:
             os.remove(self.pathname)
             print("{0} deleted by process {1} ".format(self.pathname, self.pid))
-        except:
+        except IOError as ioe:
             print('An error occured while deleting {0}'.format(self.pathname))
 
 

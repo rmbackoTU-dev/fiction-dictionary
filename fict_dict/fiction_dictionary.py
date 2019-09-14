@@ -16,11 +16,14 @@ class FictionDict(UserDict):
     '''
 
     #Keep class generation generic do the fancy stuff later
-    def __init__(self, name="",  data=dict(), **kwargs):
+    def __init__(self, name=" ",  data=dict(), **kwargs):
         UserDict.__init__(self)
         self.name=name
-        self.update(data)
-        self.update(kwargs)
+        #check presence of kwargs first
+        if not kwargs:
+            self.update(data)
+        else:
+            self.update(kwargs)
 
     @property
     def name(self):
@@ -36,22 +39,28 @@ class FictionDict(UserDict):
             raise ValueError("Name must be defined")
         self.__name=value
 
-    #pseudo-data setter, data attribute inherited
-    '''
-        Object dictionary setter
+    def set_Data(self, value, **kwargs):
+        '''
+        Objec dictionary setter
         Destructive removes current value
-    '''
-    def set_Data(self, value):
+        data attribute for inherited UserDict
+        :param value:
+        :param kwargs:
+        '''
         #Check that value is of type dictionary and replace data with value
         #Otherwise return error.
         try:
-            if not value:
-                raise ValueError("Value must be defined")
-
-            if not isinstance(value, dict):
-                raise TypeError
+            if not kwargs:
+                #check value if empty throw error
+                if not value:
+                    raise ValueError("Value must be defined")
+                if not isinstance(value, dict):
+                    raise TypeError
+                    self.clear()
+                    self.update(value)
+            #kwargs is a dictionary by default and does not need a typeCheck
             self.clear()
-            self.update(value)
+            self.update(kwargs)
         except TypeError as te:
             print("Expected a List got a ", type(value))
 
@@ -106,7 +115,7 @@ class FictionDict(UserDict):
                     print('Deleting', word)
                     del cDict[word]
                 else:
-                    print(word, " id not defined like'", word)
+                    print(word, " id not defined like ", word)
             else:
                 print(word, "not in", cDict.name)
         return cDict
@@ -145,7 +154,7 @@ class FictionDict(UserDict):
             if not word:
                 raise ValueError("Word can not be empty, must be defined.")
             elif not isinstance(word, str):
-                raise TypeError("Word must be a String")
+                raise TypeError("Word must be a Dictionary")
             wordDefs=self.data[word]
             buildString='{0}:'.format(word)
             index=0
@@ -172,14 +181,14 @@ class FictionDict(UserDict):
                 raise  TypeError("Word must be a String")
             for w in self.keys():
                 if w == word:
-                    raise DuplicateWord(word)
+                    #raise DuplicateWord(word)
                     return True
             return False
         except TypeError as te:
-            print('Expected string recieved a {0}'.format(type(word)))
-        except DuplicateWord as de:
-            print(de.message)
-            raise DuplicateWord(word)
+            print('Expected string recieved a {0} '.format(type(word)))
+        #except DuplicateWord as de:
+            #print(de.message)
+            #raise DuplicateWord(word)
 
     def addWord(self, word):
         '''
@@ -189,34 +198,32 @@ class FictionDict(UserDict):
             if not word:
                 raise ValueError("Word must be defined")
             elif not isinstance(word, dict):
-                raise TypeError("Word must be a String")
+                raise TypeError("Word must be a Dictionary")
         except TypeError as err1:
-            print('Expected Dictionary recieved a', type(word))        
+            print('Expected Dictionary recieved a ', type(word))
         try:
-            tempWord=dict()
-            for key, val in word.items():
+            for key in word.keys():
                 if self.isDuplicateWord(key):
                     raise DuplicateWord("Word already found in dictionary")
                     return None
-                tempWord[key]=val
-                self.update(tempWord)      
+                self.update(word)
         except DuplicateWord as err2:
             print(err2.message)
 
     def editWord(self, word, newDefinition, i=0):
         '''
-        Searches for word by word Key and changes the i definition to newDefinition
+        Retrieves word by Key and changes the i definition to newDefinition
         If definition not in definition list add it to end of word.
         '''
         try:
-            if not word or newDefinition:
-                nullValue=("word", "newDefinition")[ word is None]
-                raise ValueError(nullValue+ "must be defined")
+            if not word or not newDefinition:
+                nullvalue="newDefinition" if [word is None] else "word"
+                raise ValueError(nullvalue+ " must be defined")
             elif not isinstance(word, str):
                 raise TypeError("Word must be a String")
             elif not isinstance(newDefinition, str):
-                raise TypeError("Word must be a String")
-            elif  word in self.keys():
+                raise TypeError("New Definition must be a String")
+            elif word in self.keys():
                 if i < len(self.data[word]):
                     self.data[word][i]=newDefinition
                 else:
@@ -237,9 +244,9 @@ class FictionDict(UserDict):
         try:
             if not isinstance(word, str):
                 raise TypeError("Word must be a String.")
-            self.pop(word)
+            del self.data[word]
         except TypeError as te:
-            print('Expected String recieved a', type(word))
+            print('Expected String recieved a ', type(word))
         except KeyError as wnfe:
             print('{0} was not found in the dictionary please add word before modifying'.format(word) )
             raise KeyError
@@ -256,16 +263,75 @@ class FictionDict(UserDict):
             copyDict.addWord(tempDict)
         return copyDict
 
-    def buildWordFilter(self):
+    def searchDict(self, substring):
         '''
-        Function creates a iterative filter which is used to parse the dictionary for
-        matches
+        searches Dict for substring in
+        each dict key and returns list of closest matching
+        words (keys)
+        :param: expression
+        :return: left to right and right to left list of matches
         '''
-        pass
+        if substring is  None:
+            raise ValueError("Substring must be defined")
+        elif not isinstance(substring, str):
+            raise TypeError("SubString must be a string")
+        left_to_right_list=self.left_to_right_match_list(substring)
+        right_to_left_list=self.right_to_left_match_list(substring)
+        full_match_list=left_to_right_list.append(right_to_left_list)
+        return full_match_list
 
-    def buildSearchHits(self):
+    def left_to_right_match_list(self, search_string):
         '''
-        Uses the filter returned by build word filter to make a list of matching
-        dictionary words
+        match string to keys from left to right
+        :param string:
+        :return:  List of keys in dict containing string as sub string
         '''
-        pass
+        if search_string is  None:
+            raise ValueError("Substring must be defined")
+        elif not isinstance(search_string, str):
+            raise TypeError("SubString must be a string")
+        matchs=[]
+        for k in self.keys():
+            #i is a character position for k
+            i=0
+            search_string_len=len(search_string)
+            string_diff=len(k)-search_string_len+1
+            while i < string_diff:
+                j=0
+                current_char=i+j-1
+                while (j <= search_string_len and k[current_char]== search_string[j]):
+                    j=j+1
+                if j>search_string_len:
+                    #instead of returning the subString consider key a match
+                    matchs.append(k)
+            #instead of returning non-indexable value move to next word
+        return matchs
+
+
+    def right_to_left_match_list(self, search_string):
+        '''
+        match string to keys from right to left
+        :param string:
+        :return: List of keys in dict containing string as sub String
+        '''
+        if search_string is  None:
+            raise ValueError("Substring must be defined")
+        elif not isinstance(search_string, str):
+            raise TypeError("SubString must be a string")
+        matchs=[]
+        for k in self.keys():
+            #i is a character position for k
+            i=0
+            search_string_len=len(search_string)
+            string_diff=len(k)-search_string_len+1
+            while i < string_diff:
+                #j is last character of search string
+                j=search_string_len
+                current_char=i+j-1
+                while( j>0 and k[current_char]== search_string[j]):
+                    j=j-1
+                if j == 0:
+                    #instead of returning the subString consider key a match
+                    matchs.append(k)
+            #instead of returning non-indexable value move to next word
+        return matchs
