@@ -7,21 +7,7 @@ from fict_dict.dataFile import dataFile
 Client class used to call use functionality of fiction dictionary
 '''
 
-class fictDictClient():
-    '''
-    todo:
-    create a dictionary
-    delete a dictionary
-    edit a dictionary
-    add two dictionaries
-    get the difference between two dictionaries
-    search a single dictionary
-    copy a dictionary to a new file
-    '''
-
-	#class variables:
-    cacheDir='/FictionDictCache'
-
+class fict_dict_cli_access():
 
     def __init__(self):
         pid=os.getpid()
@@ -70,6 +56,58 @@ class fictDictClient():
         exportDict=importDict.copyDict()
         newDataFile.exportJSON(exportDict)
 
+    def get_word_Str(self, srcFile, word):
+        targetDictionary=dataFile(self.pid, srcFile)
+        importDict: FictionDict=targetDictionary.importJSON()
+        wordStr=importDict.wordToString(word)
+        return wordStr
+
+    def searchDict(self, dictFile, searchWord):
+        searchTarget=dataFile(self.pid, dictFile )
+        matchList=[]
+        importDict: FictionDict=searchTarget.importJSON()
+        matchList=importDict.searchDict(searchWord)
+        return matchList
+
+    def searchLeftDict(self, dictFile, searchWord):
+        searchTarget=dataFile(self.pid, dictFile)
+        matchList=[]
+        importDict: FictionDict=searchTarget.importJSON()
+        matchList=importDict.left_to_right_match_list(searchWord)
+        return matchList
+
+    def searchRightDict(self, dictFile, searchWord):
+        searchTarget=dataFile(self.pid, dictFile)
+        matchList=[]
+        importDict: FictionDict=searchTarget.importJSON()
+        matchList=importDict.right_to_left_match_list(searchWord)
+        return matchList
+
+    def searchDictWithDef(self, dictFile, searchWord):
+        searchTarget=dataFile(self.pid, dictFile)
+        strList=[]
+        importDict: FictionDict=searchTarget.importJSON()
+        matchList=importDict.searchDict(searchWord)
+        tempStr=""
+        for word in matchList:
+            tempStr=importDict.wordToString(word)
+            strList.append(tempStr)
 
 
+    def searchDictLeftDict(self, dictFile, searchWord):
+        searchTarget=dataFile(self.pid, dictFile)
+        strList=[]
+        importDict: FictionDict=searchTarget.importJSON()
+        matchList=importDict.left_to_right_match_list(searchWord)
+        for word in matchList:
+            tempStr=importDict.wordToString(word)
+            strList.append(tempStr)
 
+    def searchDictRightDict(self, dictFile, searchWord):
+        searchTarget=dataFile(self.pid)
+        strList=[]
+        importDict: FictionDict=searchTarget.importJSON()
+        matchList=importDict.right_to_left_match_list(searchWord)
+        for word in matchList:
+            tempStr=importDict.wordToString(word)
+            strList.append(tempStr)
