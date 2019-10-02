@@ -1,116 +1,111 @@
 import unittest
-import sys
-from unittest import mock
-from fict_dict.client import CommandLineLib
+from fict_dict.client import fict_dict_cli_access
+
 #TODO:
-# Test Interactive
-# Test Help
-# Test Create
-# Test Select
-# Test Remove
-# Test Delete
-# Test AddWord
-# Test EditWord
-# Test listDicts
-# Test Save
-# Test printWord
-# Test printDict
-# Test dictionaryAdd
-# Test dictionaryCompare
-# Test importJSON
-# Implement and Test CommandLineMode
-# Implement and test Search
+#Test create
+#Test Delete
+#Test Edit
+#Test Copy
+#Test Dictionary Add
+#Test Dictionary Compare
+#Test Get word String
+#Test Get Dict String
+#Test Search for word
+#Test Search for def
+#Test Left to right word search
+#Test Right to left word search
+#Test Left to right dictionary search
+#Test Right to left dictionary Search
 
 
-#Replacement output redirection
-class OutputRedirect():
-
-    def __init__(self):
-        self.data = []
-
-    def write(self, s):
-        self.data.append(s)
-
-    def __str__(self):
-        return "".join(self.data)
-
-    def flush_output(self):
-        del self.data[:]
-
-
-class TestMenu(unittest.TestCase):
-    stdout_redirect = OutputRedirect()
+class Test_client(unittest.TestCase):
     #A new client
-    testCLIClient = CommandLineLib()
+    testClientInterface=fict_dict_cli_access()
 
     def setUp(self):
         pass
 
     def tearDown(self):
         pass
-    
-    #Add endlines to expected out
-    def format_Expected(self, optDict):
-        #Quick and easy dict value to list via comprehensions 
-        expected_out = [i for i in optDict.values()]
-        for i in range(len(expected_out)):
-            current = expected_out[i]
-            expected_out[i] = current+'\n'
-        return expected_out
 
-    def test_InteractiveLong(self, mock_print):
-        self.fail('Test has not been implemented')
-    
-    def test_InteractiveShort(self, mock_print):
+
+    def test_Create_Dictionary(self):
         self.fail('Test has not been implemented')
 
-    def test_HelpShort(self):
+    def test_Create_Dictionary_WorstCase(self):
         self.fail('Test has not been implemented')
 
-    def test_HelpLong(self):
+    def test_Delete_Dictionary(self):
         self.fail('Test has not been implemented')
 
-    def test_interactiveSysExit(self):
+    def test_Delete_Dictionary_WorstCase(self):
+         self.fail('Test has not been implemented')
+
+    def test_Edit_Dictionary(self):
         self.fail('Test has not been implemented')
 
-    def test_helpSysExit(self):
+    def test_Edit_Dictionary_WorstCase(self):
         self.fail('Test has not been implemented')
 
-    def test_Import(self):
+    def test_Copy_Dictionary_WorstCase(self):
         self.fail('Test has not been implemented')
 
-    def test_Create(self):
+    def test_dictionary_Add(self):
         self.fail('Test has not been implemented')
 
-    def test_Select(self):
-        self.fail('Test has not been implemented')
-
-    def test_Remove(self):
-        self.fail('Test has not been implemented')
-
-    def test_Delete(self):
-        self.fail('Test has not been implemented')
-
-    def test_Edit(self):
-        self.fail('Test has not been implemented')
-
-    def test_list(self):
-        self.fail('Test has not been implemented')
-
-    def test_save(self):
-        self.fail('Test has not been implemented')
-
-    def test_printWord(self):
-        self.fail('Test has not been implemented')
-
-    def test_printDictionary(self):
-        self.fail('Test has not been implemented')
-
-    def test_dictionaryAdd(self):
-        self.fail('Test has not been implemented')
+    def test_dictionary_Add_WorstCase(self):
+        self.fail("Test has not been implemented")
 
     def test_dictionaryCompare(self):
         self.fail('Test has not been implemented')
 
-    def test_Search(self):
+    def test_dictionary_Compare_WorstCase(self):
+        self.fail('Test has not been implemented')
+
+    def test_get__word_from_Dict(self):
+       self.fail('Test has not been implemented')
+
+    def test_get_word_from_Dict_WorstCase(self):
+        self.fail('Test has not been implemented')
+
+    def test_get_dictionary_string(self):
+        self.fail('Test has not been implemented')
+
+    def test_get_dictionary_string_wWrstCase(self):
+        self.fail('Test has not been implemented')
+
+    def test_Search_Dictionary(self):
+        self.fail('Test has not been implemented')
+
+    def test_Search_Dictionary_WorstCase(self):
+        self.fail('Test has not been implemented')
+
+    def test_Search_Dictionary_FromLeft(self):
+        self.fail('Test has not been implemented')
+
+    def test_Search_Dictionary_FromLeft_WorstCase(self):
+        self.fail('Test has not been implemented')
+
+    def test_search_Dictionary_FromRight(self):
+        self.fail('Test has not been implemented')
+
+    def test_search_Dictionary_FromRight_WorstCase(self):
+        self.fail('Test has not been implemented')
+
+    def test_search_Dictionary_ret_Def(self):
+        self.fail('Test has not been implemented')
+
+    def test_search_Dictiaonary_ret_Def_WorseCase(self):
+        self.fail('Test has not been implemented')
+
+    def test_search_Dictionary_ret_Def_FromLeft(self):
+        self.fail('Test has not been implemented')
+
+    def test_search_Dictionary_ret_Def_FromLeft_WorstCase(self):
+        self.fail('Test has not been implemented')
+
+    def test_search_Dictionary_ret_Def_FromRight(self):
+        self.fail('Test has not been implemented')
+
+    def test_search_Dictionary_ret_Def_FromRight_WorstCase(self):
         self.fail('Test has not been implemented')

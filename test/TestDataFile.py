@@ -1,16 +1,17 @@
-from fict_dict.dataFile import DataFile
+from fict_dict.dataFile import dataFile
 import unittest
 import os
 
 # TODO
 '''
   Test implemented functions
+  Implement worst case test
 '''
 
 
 class TestTempFile(unittest.TestCase):
 
-    test_temp=DataFile()
+    test_temp=dataFile(os.getpid())
     testDict={"A": ["The quick brown fox jumps over the lazy dog"]}
     testDictTwo={"Abba": ["A Band"], "Abba-Kadabra" : ["A magical command"]}
 
@@ -29,31 +30,31 @@ class TestTempFile(unittest.TestCase):
         self.assertEqual(self.test_temp.currentContext, self.testDict)
 
     def test_NoPID(self):
-        pass
+        self.fail("Test has not been implemented yet")
 
     def test_NoPathDir(self):
-        pass
+        self.fail("Test has not been implemented yet")
 
     def test_Export(self):
-        pass
+        self.fail("Test has not been implemented yet")
 
     def test_ExportOverwrite(self):
-        pass
+        self.test("Test has not been implemented yet")
 
     def test_Import(self):
-        pass
+        self.fail("Test has not been implemented yet")
 
     def test_Delete(self):
-        pass
+        self.fail("Test has not been implemented yet")
 
     def test_DataFileExportIOError(self):
-        pass
+        self.fail("Test has not been implemented yet")
 
     def test_ExportOverWriteIOError(self):
-        pass
+        self.fail("Test hase not been implemented yet")
 
-    def test_InportIOError(self):
-        pass
+    def test_ImportIOError(self):
+        self.fail("Test has not been implemented yet")
 
     def testDeleteIOError(self):
-        pass
+        self.fail("Test has not been implemented yet")

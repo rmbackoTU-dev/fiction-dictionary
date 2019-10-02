@@ -3,16 +3,8 @@ from fict_dict.fiction_dictionary import FictionDict
 from fict_dict.exceptions  import DuplicateWord
 #TODO:
 # Fix current tests
-# Add known failures to current tests
-# Add words
-# Edit Definitions
-# Delete words
-# Export Dictionaries to JSON
-#  Import Dictionaries to JSON
-#  Create word filter builder (Using Generators )
-# Make unique definations with similar words Unique
-# Connect to definition list
-# Verify Uniqueness
+# Add Worst Case Test
+
 
 
 class TestDictionary(unittest.TestCase):
@@ -175,13 +167,6 @@ class TestDictionary(unittest.TestCase):
         self.testD = self.testA.copyDict()
         self.assertEqual(self.testA.data, self.testD.data)
 
-    '''
-    def test_importJSON(self):
-        self.testA.exportJSON('TestA', '/home/ryan/dev/fiction_dictionary/dictionaries/')
-        self.testD.importJSON('TestD', '/home/ryan/dev/fiction_dictionary/dictionaries/TestA.json')
-        self.assertEqual(self.testA.data, self.testD.fDict.pop.data)
-    '''
-
     def test_printWord(self):
         test_word='TCWord1'
         test_str=self.testC.wordToString(test_word)
@@ -189,8 +174,6 @@ class TestDictionary(unittest.TestCase):
         comp_str="TCWord1:       \tcW1Def1\ncW1Def2\n"
         self.assertEqual(comp_str, test_str)
     '''
-    def test_buildFilter(self):
-        self.fail("Not yet implemented --building a search Filter")
     '''
     def test_duplicateWord_typeErr_int(self):
         self.assertRaises(TypeError, self.testA.isDuplicateWord, 1)
@@ -233,6 +216,15 @@ class TestDictionary(unittest.TestCase):
 
     def test_deleteWord_typeErr_dict(self):
         self.assertRaises(TypeError, self.testA.deleteWord, {1: 'bar'})
+
+    def test_search_word(self):
+        self.fail("Test has not been implemented yet")
+
+    def test_search_left_to_right(self):
+        self.fail("Test has not been implemented yet")
+
+    def test_search_right_to_left(self):
+        self.fail("Test has not been implemented yet")
 
 if __name__ == '__main__':
     unittest.main()

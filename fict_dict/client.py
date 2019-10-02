@@ -1,6 +1,5 @@
-import sys, os, argparse, json, datetime
+import os
 from fict_dict.fiction_dictionary import FictionDict
-from fict_dict.exceptions import DuplicateWord
 from fict_dict.dataFile import dataFile
 
 '''
@@ -13,7 +12,7 @@ class fict_dict_cli_access():
         pid=os.getpid()
 
 
-    def createDictionaryName(self, dictName, fileName):
+    def createDictionary(self, dictName, fileName):
         newDict=FictionDict(dictName)
         newDataFile=dataFile(self.pid, fileName)
         newDataFile.exportJSON(newDict)
@@ -62,6 +61,12 @@ class fict_dict_cli_access():
         wordStr=importDict.wordToString(word)
         return wordStr
 
+    def get_dict_Str(self, srcFile):
+        targetDictionary=dataFile(self.pid, srcFile)
+        importDict: FictionDict=targetDictionary.importJSON()
+        dictStr=importDict.__str__()
+        return dictStr
+
     def searchDict(self, dictFile, searchWord):
         searchTarget=dataFile(self.pid, dictFile )
         matchList=[]
@@ -92,7 +97,7 @@ class fict_dict_cli_access():
         for word in matchList:
             tempStr=importDict.wordToString(word)
             strList.append(tempStr)
-
+        return strList
 
     def searchDictLeftDict(self, dictFile, searchWord):
         searchTarget=dataFile(self.pid, dictFile)
@@ -102,6 +107,7 @@ class fict_dict_cli_access():
         for word in matchList:
             tempStr=importDict.wordToString(word)
             strList.append(tempStr)
+        return strList
 
     def searchDictRightDict(self, dictFile, searchWord):
         searchTarget=dataFile(self.pid)
@@ -111,3 +117,4 @@ class fict_dict_cli_access():
         for word in matchList:
             tempStr=importDict.wordToString(word)
             strList.append(tempStr)
+        return strList
