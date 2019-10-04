@@ -20,7 +20,7 @@ class FictionDict(UserDict):
         UserDict.__init__(self)
         self.name=name
         #check presence of kwargs first
-        if not kwargs:
+        if kwargs is None:
             self.update(data)
         else:
             self.update(kwargs)
@@ -35,7 +35,7 @@ class FictionDict(UserDict):
         Object name setter
         Set name
         '''
-        if not value:
+        if value is None:
             raise ValueError("Name must be defined")
         self.__name=value
 
@@ -50,9 +50,9 @@ class FictionDict(UserDict):
         #Check that value is of type dictionary and replace data with value
         #Otherwise return error.
         try:
-            if not kwargs:
+            if  kwargs is None:
                 #check value if empty throw error
-                if not value:
+                if value is None:
                     raise ValueError("Value must be defined")
                 if not isinstance(value, dict):
                     raise TypeError
@@ -76,8 +76,7 @@ class FictionDict(UserDict):
         '''
         #Current dictionary initialization
         #check the internal data should be type list, other should be type dictionary
-
-        if not other:
+        if other is None:
             raise ValueError("Other dictionary "+\
                              " must be defined")
         elif not isinstance(other, FictionDict):
@@ -101,7 +100,7 @@ class FictionDict(UserDict):
         Returns the dictionary without the deleted elements
         '''
         #current dictionary initialization
-        if not other:
+        if other is None:
             raise ValueError("Other dictionary "+\
                              " must be defined")
         elif not isinstance(other, FictionDict):
@@ -151,7 +150,7 @@ class FictionDict(UserDict):
         '''
 
         try:
-            if not word:
+            if word is None:
                 raise ValueError("Word can not be empty, must be defined.")
             elif not isinstance(word, str):
                 raise TypeError("Word must be a Dictionary")
@@ -175,7 +174,7 @@ class FictionDict(UserDict):
          '''
         #Throwing raise outside of the try except allows it to be passed to other functions
         try:
-            if not word:
+            if word is None:
                 raise ValueError("Word must be defined")
             elif  not isinstance(word, str):
                 raise  TypeError("Word must be a String")
@@ -195,7 +194,7 @@ class FictionDict(UserDict):
         Adds a single word, or dictionary of words to the fiction dictionary.
         '''
         try:
-            if not word:
+            if word is None:
                 raise ValueError("Word must be defined")
             elif not isinstance(word, dict):
                 raise TypeError("Word must be a Dictionary")
@@ -216,7 +215,7 @@ class FictionDict(UserDict):
         If definition not in definition list add it to end of word.
         '''
         try:
-            if not word or not newDefinition:
+            if word is None or newDefinition is None:
                 nullvalue="newDefinition" if [word is None] else "word"
                 raise ValueError(nullvalue+ " must be defined")
             elif not isinstance(word, str):
@@ -271,7 +270,7 @@ class FictionDict(UserDict):
         :param: expression
         :return: left to right and right to left list of matches
         '''
-        if substring is  None:
+        if substring is None:
             raise ValueError("Substring must be defined")
         elif not isinstance(substring, str):
             raise TypeError("SubString must be a string")
@@ -286,7 +285,7 @@ class FictionDict(UserDict):
         :param string:
         :return:  List of keys in dict containing string as sub string
         '''
-        if search_string is  None:
+        if search_string is None:
             raise ValueError("Substring must be defined")
         elif not isinstance(search_string, str):
             raise TypeError("SubString must be a string")

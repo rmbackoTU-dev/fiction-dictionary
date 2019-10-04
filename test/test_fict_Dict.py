@@ -4,7 +4,7 @@ from fict_dict.exceptions  import DuplicateWord
 #TODO:
 # Fix current tests
 # Add Worst Case Test
-
+# Fix issues with exceptions
 
 
 class TestDictionary(unittest.TestCase):
@@ -17,7 +17,10 @@ class TestDictionary(unittest.TestCase):
         Refreshes the test dictionaries after each test. Necessary for test that add/ or subtract from base dictionary
     '''
     def repopulateDict(self):
+        self.testA=FictionDict()
+        self.testC=FictionDict()
         self.testA.name = 'TestA'
+        self.testC.name = 'TestC'
         self.testA.set_Data({'TAWord1' : ['aW1Def1'], 'TAWord2': ['aW2Def1']})
         self.testC.set_Data({'TCWord1' : ['cW1Def1', 'cW1Def2']})
 
@@ -25,7 +28,7 @@ class TestDictionary(unittest.TestCase):
         self.repopulateDict()
 
     def tearDown(self):
-        pass
+       self.repopulateDict()
 
     '''
     Add two dictionaries together test the results against a  known solution.
@@ -153,6 +156,7 @@ class TestDictionary(unittest.TestCase):
     def test_definition_add(self):
         new_def = 'cW1Def3'
         test_word = 'TCWord1'
+        print(self.testC.__str__())
         self.testD = FictionDict('Test', {'TCWord1': ['cW1Def1', 'cW1Def2', 'cW1Def3']})
         self.testC.editWord(test_word, new_def, 2)
         self.assertEqual(self.testC.data, self.testD.data)
@@ -225,6 +229,16 @@ class TestDictionary(unittest.TestCase):
 
     def test_search_right_to_left(self):
         self.fail("Test has not been implemented yet")
+
+    def test_search_word_WorseCase(self):
+        self.fail("Test has not been implemented yet")
+
+    def test_search_left_to_right_WorseCase(self):
+        self.fail("Test has not been implemented yet")
+
+    def test_search_right_to_left_WorseCase(self):
+        self.fail("Test has not been implemented yet")
+
 
 if __name__ == '__main__':
     unittest.main()

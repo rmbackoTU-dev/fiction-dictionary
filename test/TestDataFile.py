@@ -1,7 +1,7 @@
 from fict_dict.dataFile import dataFile
 import unittest
 import os
-
+import sys
 # TODO
 '''
   Test implemented functions
@@ -10,8 +10,10 @@ import os
 
 
 class TestTempFile(unittest.TestCase):
-
-    test_temp=dataFile(os.getpid())
+    currentdir=os.path.dirname(os.path.realpath(__file__))
+    testFile=os.path.join(currentdir, 'testFileOne.json')
+    testFileTwo=os.path.join(currentdir, 'testFileTwo.json')
+    test_temp=dataFile(os.getpid(), currentdir)
     testDict={"A": ["The quick brown fox jumps over the lazy dog"]}
     testDictTwo={"Abba": ["A Band"], "Abba-Kadabra" : ["A magical command"]}
 
