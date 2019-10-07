@@ -1,7 +1,6 @@
 import json, sys, os
 from collections import UserDict, defaultdict
 from fict_dict.exceptions import DuplicateWord
-import time
 
 #TODO
  #Fix the formating on str
@@ -50,17 +49,20 @@ class FictionDict(UserDict):
         #Check that value is of type dictionary and replace data with value
         #Otherwise return error.
         try:
-            if  kwargs is None:
+            set=(kwargs is None)
+            if  not kwargs:
                 #check value if empty throw error
                 if value is None:
                     raise ValueError("Value must be defined")
                 if not isinstance(value, dict):
                     raise TypeError
+                else:
                     self.clear()
                     self.update(value)
             #kwargs is a dictionary by default and does not need a typeCheck
-            self.clear()
-            self.update(kwargs)
+            else:
+                self.clear()
+                self.update(kwargs)
         except TypeError as te:
             print("Expected a List got a ", type(value))
 

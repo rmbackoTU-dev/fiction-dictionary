@@ -17,8 +17,6 @@ class TestDictionary(unittest.TestCase):
         Refreshes the test dictionaries after each test. Necessary for test that add/ or subtract from base dictionary
     '''
     def repopulateDict(self):
-        self.testA=FictionDict()
-        self.testC=FictionDict()
         self.testA.name = 'TestA'
         self.testC.name = 'TestC'
         self.testA.set_Data({'TAWord1' : ['aW1Def1'], 'TAWord2': ['aW2Def1']})
@@ -28,7 +26,8 @@ class TestDictionary(unittest.TestCase):
         self.repopulateDict()
 
     def tearDown(self):
-       self.repopulateDict()
+        pass
+        #self.repopulateDict()
 
     '''
     Add two dictionaries together test the results against a  known solution.

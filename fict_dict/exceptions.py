@@ -16,4 +16,7 @@ class DuplicateWord(Exception):
 
     @message.setter
     def message(self, value):
-        self.__message = value
+        if value is None:
+            raise ValueError('Exception message was not set')
+        self._message=value
+
