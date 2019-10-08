@@ -19,7 +19,7 @@ class FictionDict(UserDict):
         UserDict.__init__(self)
         self.name=name
         #check presence of kwargs first
-        if kwargs is None:
+        if not kwargs :
             self.update(data)
         else:
             self.update(kwargs)
@@ -78,7 +78,7 @@ class FictionDict(UserDict):
         '''
         #Current dictionary initialization
         #check the internal data should be type list, other should be type dictionary
-        if other is None:
+        if not other :
             raise ValueError("Other dictionary "+\
                              " must be defined")
         elif not isinstance(other, FictionDict):
@@ -102,7 +102,7 @@ class FictionDict(UserDict):
         Returns the dictionary without the deleted elements
         '''
         #current dictionary initialization
-        if other is None:
+        if not other:
             raise ValueError("Other dictionary "+\
                              " must be defined")
         elif not isinstance(other, FictionDict):
@@ -147,12 +147,12 @@ class FictionDict(UserDict):
         '''
         Method to get the string repersentation
         of a word and its definition
-        :param word:
+        :param word: a Dictionary maping a string/tuples to a list of strings
         :return: string containing word and definition
         '''
 
         try:
-            if word is None:
+            if not word:
                 raise ValueError("Word can not be empty, must be defined.")
             elif not isinstance(word, str):
                 raise TypeError("Word must be a Dictionary")
@@ -175,18 +175,16 @@ class FictionDict(UserDict):
         Checks for duplicate words
          '''
         #Throwing raise outside of the try except allows it to be passed to other functions
-        try:
-            if word is None:
-                raise ValueError("Word must be defined")
-            elif  not isinstance(word, str):
-                raise  TypeError("Word must be a String")
-            for w in self.keys():
-                if w == word:
-                    #raise DuplicateWord(word)
-                    return True
-            return False
-        except TypeError as te:
-            print('Expected string recieved a {0} '.format(type(word)))
+        if not word:
+            raise ValueError("Word must be defined")
+        elif not isinstance(word, str):
+            error='Expected string recieved a {0} '.format(type(word))
+            raise TypeError(error)
+        for w in self.keys():
+            if w == word:
+                #raise DuplicateWord(word)
+                return True
+        return False
         #except DuplicateWord as de:
             #print(de.message)
             #raise DuplicateWord(word)
@@ -199,10 +197,7 @@ class FictionDict(UserDict):
             if word is None:
                 raise ValueError("Word must be defined")
             elif not isinstance(word, dict):
-                raise TypeError("Word must be a Dictionary")
-        except TypeError as err1:
-            print('Expected Dictionary recieved a ', type(word))
-        try:
+                raise TypeError('Expected Dictionary recieved a '.format(type(word)))
             for key in word.keys():
                 if self.isDuplicateWord(key):
                     raise DuplicateWord("Word already found in dictionary")
@@ -231,11 +226,9 @@ class FictionDict(UserDict):
                     self.data[word].append(newDefinition)
             else:
                 raise KeyError
-        except TypeError as te:
-            print('Expected String recieved a', type(word))
         except KeyError as wnfe:
-            print('{0} was not found in the dictionary please add word before modifying'.format(word))
-            raise KeyError
+            error='{0} was not found in the dictionary please add word before modifying'.format(word)
+            raise KeyError(error)
 
     def deleteWord(self, word):
         '''
@@ -244,13 +237,11 @@ class FictionDict(UserDict):
         '''
         try:
             if not isinstance(word, str):
-                raise TypeError("Word must be a String.")
+                raise TypeError('Expected String recieved a '.format(type(word)))
             del self.data[word]
-        except TypeError as te:
-            print('Expected String recieved a ', type(word))
         except KeyError as wnfe:
-            print('{0} was not found in the dictionary please add word before modifying'.format(word) )
-            raise KeyError
+            error='{0} was not found in the dictionary please add word before modifying'.format(word)
+            raise KeyError(error)
 
     def copyDict(self):
         '''

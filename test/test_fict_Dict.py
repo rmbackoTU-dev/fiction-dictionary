@@ -55,18 +55,18 @@ class TestDictionary(unittest.TestCase):
         self.assertEqual(repr_str, comp_str)
 
     '''
-    Test A should return
+    Test A should return   
     "TAWord1:\t'aW1Def1'\nTAWord2:\taW2Def1\n"
     '''
     def test_toString_dict(self):
-        comp_str = "TAWord1:       \taW1Def1\nTAWord2:       \taW2Def1\n"
+        comp_str = "TAWord1:\taW1Def1\nTAWord2:\taW2Def1\n"
         self.assertEqual(str(self.testA), comp_str)
 
     '''
     Test should verify line returns after each definition
     '''
     def test_multi_toString_dict(self):
-        comp_str = "TCWord1:       \tcW1Def1\ncW1Def2\n"
+        comp_str = "TCWord1:\tcW1Def1\n\tcW1Def2\n"
         self.assertEqual(str(self.testC), comp_str)
 
     '''
@@ -126,7 +126,7 @@ class TestDictionary(unittest.TestCase):
     def test_duplicateError(self):
         word_dict_test = {"TAWord1": ['aW1Def1']}
         word = next(iter(word_dict_test))
-        self.assertRaises(DuplicateWord, self.testA.isDuplicateWord, word)
+        self.assertEqual(self.testA.isDuplicateWord(word), True)
 
     def test_KeyError_edit(self):
         edit_word = 'notInDict'
@@ -174,7 +174,7 @@ class TestDictionary(unittest.TestCase):
         test_word='TCWord1'
         test_str=self.testC.wordToString(test_word)
         test_word_len = len(test_word)
-        comp_str="TCWord1:       \tcW1Def1\ncW1Def2\n"
+        comp_str="TCWord1:\tcW1Def1\n\tcW1Def2\n"
         self.assertEqual(comp_str, test_str)
     '''
     '''
