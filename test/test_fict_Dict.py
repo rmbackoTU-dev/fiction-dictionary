@@ -220,23 +220,193 @@ class TestDictionary(unittest.TestCase):
     def test_deleteWord_typeErr_dict(self):
         self.assertRaises(TypeError, self.testA.deleteWord, {1: 'bar'})
 
+    '''
+    Search Test will use the W section of the dictionary featured
+    in 'Dune' by  Frank Herbert, and the sub strings of
+    'Wa', 'taw', 'en', and 'Water'
+    @input
+    'Water Burden'
+    'Water Counter
+    'Water Discipline'
+    'Waterman'
+    'Water Tube'
+    'Way, Bene Gesserit'
+    'Weather Scanner'
+    'Weirding'
+    'Wind trap'
+    
+    @expected outputs
+    For Wa
+    wa_expected=['Water Burden', /
+    'Water Counter', /
+    'Water Discipline', /
+    'Waterman', /
+    'Water Tube', /
+    'Way, Bene Gesserit']
+    
+    For 'taw'
+    taw_expected=['Water Burden', \ 
+    'Water Counter', \
+    'Water Discipline', \
+    'Waterman', \
+    'Water Tube' ]
+    
+    For en:
+    en_expected=['Water Burden', \
+    'Water Discipline', \
+    'Way Bene Gesserit', \
+    'Water Scanner']
+    
+    For water:
+    water_expected=['Water Burden', /
+    'Water Counter', /
+    'Water Discipline', /
+    'Waterman', /
+    'Water Tube']
+    '''
     def test_search_word(self):
+        w_dict=FictionDict()
+        w_dict_data={'Water Burden': ['defFill1'], \
+                'Water Counters': ['defFill2'], \
+                'Water Discipline': ['defFill3'] , \
+                'Waterman': ['defFill4'], \
+                'Water of Life': ['defFill5'], \
+                'Way, Bene Gesserit': ['defFill6'], \
+                'Weather Scanner': ['defFill7'], \
+                'Weirding': ['defFill8'], \
+                'Wind Trap': ['defFill9'] }
+        w_dict.addWord(w_dict_data)
+        wa_expected=['Water Burden', \
+        'Water Counter', \
+        'Water Discipline', \
+        'Waterman', \
+        'Water Tube', \
+    '   Way, Bene Gesserit']
+        taw_expected=['Water Burden', \
+        'Water Counter', \
+        'Water Discipline', \
+        'Waterman', \
+        'Water Tube' ]
+        en_expected=['Water Burden', \
+        'Water Discipline', \
+        'Way Bene Gesserit', \
+        'Water Scanner']
+        water_expected=['Water Burden', \
+        'Water Counter', \
+        'Water Discipline', \
+        'Waterman', \
+        'Water Tube']
         self.fail("Test has not been implemented yet")
 
     def test_search_left_to_right(self):
+        w_dict=FictionDict()
+        w_dict_data={'Water Burden': ['defFill1'], \
+                'Water Counters': ['defFill2'], \
+                'Water Discipline': ['defFill3'] , \
+                'Waterman': ['defFill4'], \
+                'Water of Life': ['defFill5'], \
+                'Way, Bene Gesserit': ['defFill6'], \
+                'Weather Scanner': ['defFill7'], \
+                'Weirding': ['defFill8'], \
+                'Wind Trap': ['defFill9'] }
+        w_dict.addWord(w_dict_data)
+        wa_expected=['Water Burden', \
+        'Water Counter', \
+        'Water Discipline', \
+        'Waterman', \
+        'Water Tube', \
+    '   Way, Bene Gesserit']
+        en_expected=['Way Bene Gesserit']
+        water_expected=['Water Burden', \
+        'Water Counter', \
+        'Water Discipline', \
+        'Waterman', \
+        'Water Tube']
         self.fail("Test has not been implemented yet")
+
 
     def test_search_right_to_left(self):
+        w_dict=FictionDict()
+        w_dict_data={'Water Burden': ['defFill1'], \
+                'Water Counters': ['defFill2'], \
+                'Water Discipline': ['defFill3'] , \
+                'Waterman': ['defFill4'], \
+                'Water of Life': ['defFill5'], \
+                'Way, Bene Gesserit': ['defFill6'], \
+                'Weather Scanner': ['defFill7'], \
+                'Weirding': ['defFill8'], \
+                'Wind Trap': ['defFill9'] }
+        w_dict.addWord(w_dict_data)
+        taw_expected=['Water Burden', \
+        'Water Counter', \
+        'Water Discipline', \
+        'Waterman', \
+        'Water Tube' ]
+        en_expected=['Water Burden', \
+        'Water Discipline', \
+        'Way Bene Gesserit', \
+        'Water Scanner']
         self.fail("Test has not been implemented yet")
 
-    def test_search_word_WorseCase(self):
-        self.fail("Test has not been implemented yet")
+    '''
+    Test exeptions are properly thrown by search 
+    '''
+    def test_search_word_WorstCase(self):
+        w_dict=FictionDict()
+        w_dict_data={'Water Burden': ['defFill1'], \
+                'Water Counters': ['defFill2'], \
+                'Water Discipline': ['defFill3'] , \
+                'Waterman': ['defFill4'], \
+                'Water of Life': ['defFill5'], \
+                'Way, Bene Gesserit': ['defFill6'], \
+                'Weather Scanner': ['defFill7'], \
+                'Weirding': ['defFill8'], \
+                'Wind Trap': ['defFill9'] }
+        w_dict.addWord(w_dict_data)
+        emptySearchWord=''
+        nonStringSearchWord=['A Word']
+        self.assertRaises(ValueError, w_dict.searchDict, emptySearchWord)
+        self.assertRaises(TypeError, w_dict.searchDict, nonStringSearchWord)
 
-    def test_search_left_to_right_WorseCase(self):
-        self.fail("Test has not been implemented yet")
+    '''
+    Test exceptions are properly thrown by left to right search
+    '''
+    def test_search_left_to_right_WorstCase(self):
+        w_dict=FictionDict()
+        w_dict_data={'Water Burden': ['defFill1'], \
+                'Water Counters': ['defFill2'], \
+                'Water Discipline': ['defFill3'] , \
+                'Waterman': ['defFill4'], \
+                'Water of Life': ['defFill5'], \
+                'Way, Bene Gesserit': ['defFill6'], \
+                'Weather Scanner': ['defFill7'], \
+                'Weirding': ['defFill8'], \
+                'Wind Trap': ['defFill9'] }
+        w_dict.addWord(w_dict_data)
+        emptySearchWord=''
+        nonStringSearchWord=['A Word']
+        self.assertRaises(ValueError, w_dict.left_to_right_match_list, emptySearchWord)
+        self.assertRaises(TypeError, w_dict.left_to_right_match_list, nonStringSearchWord)
 
-    def test_search_right_to_left_WorseCase(self):
-        self.fail("Test has not been implemented yet")
+    '''
+    Test exceptions are properly thrown by right to left search
+    '''
+    def test_search_right_to_left_WorstCase(self):
+        w_dict=FictionDict()
+        w_dict_data={'Water Burden': ['defFill1'], \
+                'Water Counters': ['defFill2'], \
+                'Water Discipline': ['defFill3'] , \
+                'Waterman': ['defFill4'], \
+                'Water of Life': ['defFill5'], \
+                'Way, Bene Gesserit': ['defFill6'], \
+                'Weather Scanner': ['defFill7'], \
+                'Weirding': ['defFill8'], \
+                'Wind Trap': ['defFill9'] }
+        w_dict.addWord(w_dict_data)
+        emptySearchWord=''
+        nonStringSearchWord=['A Word']
+        self.assertRaises(ValueError, w_dict.right_to_left_match_list, emptySearchWord)
+        self.assertRaises(TypeError, w_dict.right_to_left_match_list, nonStringSearchWord)
 
 
 if __name__ == '__main__':

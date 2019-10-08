@@ -278,7 +278,7 @@ class FictionDict(UserDict):
         :param string:
         :return:  List of keys in dict containing string as sub string
         '''
-        if search_string is None:
+        if not search_string:
             raise ValueError("Substring must be defined")
         elif not isinstance(search_string, str):
             raise TypeError("SubString must be a string")
@@ -306,7 +306,7 @@ class FictionDict(UserDict):
         :param string:
         :return: List of keys in dict containing string as sub String
         '''
-        if search_string is  None:
+        if not search_string:
             raise ValueError("Substring must be defined")
         elif not isinstance(search_string, str):
             raise TypeError("SubString must be a string")
