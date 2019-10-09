@@ -1,6 +1,6 @@
 import unittest
 from fict_dict.fiction_dictionary import FictionDict
-from fict_dict.exceptions  import DuplicateWord
+import collections
 #TODO:
 # Fix current tests
 # Add Worst Case Test
@@ -322,7 +322,15 @@ class TestDictionary(unittest.TestCase):
         'Water Discipline', \
         'Waterman', \
         'Water Tube']
-        self.fail("Test has not been implemented yet")
+        wa_actual=w_dict.left_to_right_match_list('Wa')
+        en_actual=w_dict.left_to_right_match_list('en')
+        water_actual=w_dict.left_to_right_match_list('Water')
+        self.assertTrue(self.compareList(wa_expected, wa_actual), \
+                        "'Wa' List are not equal")
+        self.assertTrue(self.compareList(en_expected, en_actual), \
+                        "'en' List are not equal")
+        self.assertTrue(self.compareList(water_expected, water_actual), \
+                        "'water' list are not equal")
 
 
     def test_search_right_to_left(self):
@@ -407,6 +415,31 @@ class TestDictionary(unittest.TestCase):
         nonStringSearchWord=['A Word']
         self.assertRaises(ValueError, w_dict.right_to_left_match_list, emptySearchWord)
         self.assertRaises(TypeError, w_dict.right_to_left_match_list, nonStringSearchWord)
+
+    def compareList(self, listOne, listTwo):
+        counterOne=collections.Counter(listOne)
+        counterTwo=collections.Counter(listTwo)
+        current_count=0
+        cmp_count=0
+        compareValue=False
+        notFound=False
+        for k, v in counterOne.items():
+            currentCount=v
+            listTwoKey=counterTwo.keys()
+            listTwoSize=len(listTwoKey)
+            i=0
+            l=""
+            while((i <= listTwoSize) and (l != k)):
+                l=listTwoKey[i]
+                i=i+1
+            if i <= listTwoSize:
+                cmp_countount=counterTwo[i]
+                compareValue=(current_count ==  cmp_count)
+            else:
+                notFound=True
+        result=compareValue and notFound
+        return result
+
 
 
 if __name__ == '__main__':

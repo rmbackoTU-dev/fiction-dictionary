@@ -283,19 +283,27 @@ class FictionDict(UserDict):
         elif not isinstance(search_string, str):
             raise TypeError("SubString must be a string")
         matchs=[]
+        search_string_len=len(search_string)
         for k in self.keys():
             #i is a character position for k
             i=0
-            search_string_len=len(search_string)
-            string_diff=len(k)-search_string_len+1
-            while i < string_diff:
+            keyString_len=len(k)
+            str_len_difference=keyString_len-search_string_len
+            '''
+            The length must not exceed the amount
+            that would allow the entire search string to be found
+            '''
+            while i <=str_len_difference and not matchs.__contains__(k):
+                #j is a character position for search_string
                 j=0
-                current_char=i+j-1
-                while (j <= search_string_len and k[current_char]== search_string[j]):
+                current_char=i+j
+                while (j < search_string_len and k[current_char]== search_string[j]):
                     j=j+1
-                if j>search_string_len:
+                    current_char=i+j
+                if j>= search_string_len:
                     #instead of returning the subString consider key a match
                     matchs.append(k)
+                i=i+1
             #instead of returning non-indexable value move to next word
         return matchs
 
@@ -311,19 +319,27 @@ class FictionDict(UserDict):
         elif not isinstance(search_string, str):
             raise TypeError("SubString must be a string")
         matchs=[]
+        search_string_len=len(search_string)
         for k in self.keys():
             #i is a character position for k
             i=0
-            search_string_len=len(search_string)
-            string_diff=len(k)-search_string_len+1
-            while i < string_diff:
-                #j is last character of search string
-                j=search_string_len
-                current_char=i+j-1
-                while( j>0 and k[current_char]== search_string[j]):
+            key_len=len(k)
+            string_len_diff=key_len-search_string_len
+            '''
+            The length must not exceed the amount
+            that would allow the entire search string to be found
+            '''
+            while i <= string_len_diff and  not matchs.__contains__(k):
+                #j is a character position for search string
+                #in right to left it is the last position
+                j=key_len
+                current_char=i+j
+                while( j >=0 and k[current_char]== search_string[j]):
                     j=j-1
+                    current_char=i+j
                 if j == 0:
                     #instead of returning the subString consider key a match
                     matchs.append(k)
+                i=i+1
             #instead of returning non-indexable value move to next word
         return matchs
