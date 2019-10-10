@@ -267,26 +267,29 @@ class TestDictionary(unittest.TestCase):
     def test_search_word(self):
         w_dict=FictionDict()
         w_dict_data={'Water Burden': ['defFill1'], \
-                'Water Counters': ['defFill2'], \
+                'Water Counter': ['defFill2'], \
                 'Water Discipline': ['defFill3'] , \
                 'Waterman': ['defFill4'], \
-                'Water of Life': ['defFill5'], \
-                'Way, Bene Gesserit': ['defFill6'], \
-                'Weather Scanner': ['defFill7'], \
-                'Weirding': ['defFill8'], \
-                'Wind Trap': ['defFill9'] }
+                'Water Tube' : ['defFill5'], \
+                'Water of Life' : ['defFill6'], \
+                'Way, Bene Gesserit': ['defFill7'], \
+                'Weather Scanner': ['defFill8'], \
+                'Weirding': ['defFill9'], \
+                'Wind Trap': ['defFill10'] }
         w_dict.addWord(w_dict_data)
         wa_expected=['Water Burden', \
         'Water Counter', \
         'Water Discipline', \
         'Waterman', \
         'Water Tube', \
+        'Water of Life', \
     '   Way, Bene Gesserit']
-        taw_expected=['Water Burden', \
+        wat_expected=['Water Burden', \
         'Water Counter', \
         'Water Discipline', \
         'Waterman', \
-        'Water Tube' ]
+        'Water Tube', \
+        'Water of Life']
         en_expected=['Water Burden', \
         'Water Discipline', \
         'Way Bene Gesserit', \
@@ -295,33 +298,48 @@ class TestDictionary(unittest.TestCase):
         'Water Counter', \
         'Water Discipline', \
         'Waterman', \
-        'Water Tube']
-        self.fail("Test has not been implemented yet")
+        'Water Tube', \
+        'Water of Life']
+        wa_actual=w_dict.searchDict('Wa')
+        wat_actual=w_dict.searchDict('Wat')
+        en_actual=w_dict.searchDict('en')
+        water_actual=w_dict.searchDict('Water')
+        self.assertTrue(self.compareList(wa_expected, wa_actual), \
+                        "'Wa' list do no match")
+        self.assertTrue(self.compareList(wat_expected, water_actual), \
+                        "'Wat' list do not match")
+        self.assertTrue(self.compareList(en_expected, en_actual), \
+                        "'en' list do not match")
+        self.assertTrue(self.compareList(water_expected, water_actual), \
+                        "'Water' list do not match")
 
     def test_search_left_to_right(self):
         w_dict=FictionDict()
         w_dict_data={'Water Burden': ['defFill1'], \
-                'Water Counters': ['defFill2'], \
+                'Water Counter': ['defFill2'], \
                 'Water Discipline': ['defFill3'] , \
                 'Waterman': ['defFill4'], \
-                'Water of Life': ['defFill5'], \
-                'Way, Bene Gesserit': ['defFill6'], \
-                'Weather Scanner': ['defFill7'], \
-                'Weirding': ['defFill8'], \
-                'Wind Trap': ['defFill9'] }
+                'Water Tube' : ['defFill5'], \
+                'Water of Life' : ['defFill6'], \
+                'Way, Bene Gesserit': ['defFill7'], \
+                'Weather Scanner': ['defFill8'], \
+                'Weirding': ['defFill9'], \
+                'Wind Trap': ['defFill10'] }
         w_dict.addWord(w_dict_data)
         wa_expected=['Water Burden', \
         'Water Counter', \
         'Water Discipline', \
         'Waterman', \
         'Water Tube', \
+        'Water of Life', \
     '   Way, Bene Gesserit']
-        en_expected=['Way Bene Gesserit']
+        en_expected=['Water Burden','Way Bene Gesserit']
         water_expected=['Water Burden', \
         'Water Counter', \
         'Water Discipline', \
         'Waterman', \
-        'Water Tube']
+        'Water Tube', \
+        'Water of Life']
         wa_actual=w_dict.left_to_right_match_list('Wa')
         en_actual=w_dict.left_to_right_match_list('en')
         water_actual=w_dict.left_to_right_match_list('Water')
@@ -336,33 +354,39 @@ class TestDictionary(unittest.TestCase):
     def test_search_right_to_left(self):
         w_dict=FictionDict()
         w_dict_data={'Water Burden': ['defFill1'], \
-                'Water Counters': ['defFill2'], \
+                'Water Counter': ['defFill2'], \
                 'Water Discipline': ['defFill3'] , \
                 'Waterman': ['defFill4'], \
-                'Water of Life': ['defFill5'], \
-                'Way, Bene Gesserit': ['defFill6'], \
-                'Weather Scanner': ['defFill7'], \
-                'Weirding': ['defFill8'], \
-                'Wind Trap': ['defFill9'] }
+                'Water Tube' : ['defFill5'], \
+                'Water of Life' : ['defFill6'], \
+                'Way, Bene Gesserit': ['defFill7'], \
+                'Weather Scanner': ['defFill8'], \
+                'Weirding': ['defFill9'], \
+                'Wind Trap': ['defFill10'] }
         w_dict.addWord(w_dict_data)
-        taw_expected=['Water Burden', \
+        wat_expected=['Water Burden', \
         'Water Counter', \
         'Water Discipline', \
         'Waterman', \
-        'Water Tube' ]
+        'Water Tube', \
+        'Water of Life']
         en_expected=['Water Burden', \
         'Water Discipline', \
         'Way Bene Gesserit', \
         'Water Scanner']
-        self.fail("Test has not been implemented yet")
-
+        wat_actual=w_dict.right_to_left_match_list('Wat')
+        en_actual=w_dict.right_to_left_match_list('en')
+        self.assertTrue(self.compareList(wat_expected, wat_actual), \
+                        "'Wat' list are not equal")
+        self.assertTrue(self.compareList(en_expected, en_actual), \
+                        "'en' list are not equal")
     '''
     Test exeptions are properly thrown by search 
     '''
     def test_search_word_WorstCase(self):
         w_dict=FictionDict()
         w_dict_data={'Water Burden': ['defFill1'], \
-                'Water Counters': ['defFill2'], \
+                'Water Counter': ['defFill2'], \
                 'Water Discipline': ['defFill3'] , \
                 'Waterman': ['defFill4'], \
                 'Water of Life': ['defFill5'], \
@@ -382,7 +406,7 @@ class TestDictionary(unittest.TestCase):
     def test_search_left_to_right_WorstCase(self):
         w_dict=FictionDict()
         w_dict_data={'Water Burden': ['defFill1'], \
-                'Water Counters': ['defFill2'], \
+                'Water Counter': ['defFill2'], \
                 'Water Discipline': ['defFill3'] , \
                 'Waterman': ['defFill4'], \
                 'Water of Life': ['defFill5'], \
@@ -402,7 +426,7 @@ class TestDictionary(unittest.TestCase):
     def test_search_right_to_left_WorstCase(self):
         w_dict=FictionDict()
         w_dict_data={'Water Burden': ['defFill1'], \
-                'Water Counters': ['defFill2'], \
+                'Water Counter': ['defFill2'], \
                 'Water Discipline': ['defFill3'] , \
                 'Waterman': ['defFill4'], \
                 'Water of Life': ['defFill5'], \
@@ -419,26 +443,23 @@ class TestDictionary(unittest.TestCase):
     def compareList(self, listOne, listTwo):
         counterOne=collections.Counter(listOne)
         counterTwo=collections.Counter(listTwo)
-        current_count=0
-        cmp_count=0
-        compareValue=False
-        notFound=False
+        wordsFound=0
         for k, v in counterOne.items():
-            currentCount=v
-            listTwoKey=counterTwo.keys()
+            current_count=v
+            listTwoKey=list(counterTwo.keys())
             listTwoSize=len(listTwoKey)
             i=0
             l=""
-            while((i <= listTwoSize) and (l != k)):
+            cmp_count=0
+            while((i < listTwoSize) and l != k):
                 l=listTwoKey[i]
                 i=i+1
-            if i <= listTwoSize:
-                cmp_countount=counterTwo[i]
-                compareValue=(current_count ==  cmp_count)
-            else:
-                notFound=True
-        result=compareValue and notFound
-        return result
+                cmp_count=counterTwo[l]
+            if (current_count == cmp_count):
+                wordsFound=wordsFound+1
+
+        match=(wordsFound == listTwoSize)
+        return match
 
 
 

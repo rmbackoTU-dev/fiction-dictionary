@@ -329,15 +329,23 @@ class FictionDict(UserDict):
             The length must not exceed the amount
             that would allow the entire search string to be found
             '''
-            while i <= string_len_diff and  not matchs.__contains__(k):
+            while i < string_len_diff and  not matchs.__contains__(k):
                 #j is a character position for search string
                 #in right to left it is the last position
-                j=key_len
+                j=search_string_len-1
+                '''
+                compares keeps track of the characters in the search string
+                 to compare while j keeps track of the position
+                 this is essential so matches left can be tracked  without effecting
+                array index
+                '''
+                compares=search_string_len
                 current_char=i+j
-                while( j >=0 and k[current_char]== search_string[j]):
+                while( j >0 and k[current_char]== search_string[j]):
                     j=j-1
+                    compares=compares-1
                     current_char=i+j
-                if j == 0:
+                if compares == 0:
                     #instead of returning the subString consider key a match
                     matchs.append(k)
                 i=i+1
