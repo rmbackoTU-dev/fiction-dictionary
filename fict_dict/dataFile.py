@@ -1,7 +1,6 @@
 import json, os
 from fict_dict.fiction_dictionary import FictionDict
 
-
 class dataFile():
 
     '''
@@ -15,49 +14,50 @@ class dataFile():
         :param pid: process locking the file
         :param filename: file name of the file being locked by the current application
         '''
-        if(pid == None):
+        if not pid:
             raise ValueError("The process id must be set")
-
         self.pid=pid
 
-        if(pathname == None):
+        if not pathname:
             raise ValueError("The pathname must be set")
         self.file=pathname
 
     def exportJSON(self, data):
-        try:
+        if not data:
+            raise ValueError("Data to be exported has not been set")
+        else:
             print('{0} writing to {1}'.format((self.pid, self.pathname)))
             with open(self.pathname, 'a+' ) as json_file:
                 json.dump(data, json_file)
                 json_file.close()
-        except IOError as ioe:
-            print('An error occured while opening {0} to write'.format(self.pathname))
 
     def exportOverwriteJSON(self, data):
-        try:
+        if not data:
+            raise ValueError("Data to be exported has not been set")
+        else:
+            if not os.path.isfile(self.file):
+                raise IOError("This file does not exist.")
             print('{0} overwriting to {1}'.format((self.pid, self.pathname)))
             with open(self.pathname, 'w') as json_file:
                 json_file.seek(0)
                 json.dump(data, json_file)
                 json_file.truncate()
-        except IOError as ioe:
-            print("An error occured while opening {0} to overwrite".format(self.pathname))
 
     def importJSON(self):
-        try:
+        if not os.path.isfile(self.file):
+            raise IOError("This file does not exist")
+        else:
             print('{0} reading from {1}'.format(self.pid, self.pathname))
             with open(self.pathname, 'r+') as json_file:
                 importData: FictionDict=json.load(json_file)
                 json_file.close()
             return importData
-        except IOError as ioe:
-            print('An error occured while opening {0}'.format(self.pathname))
 
     def deleteJSON(self):
-        try:
+        if not os.path.isfile(self.file):
+            raise IOError("This file does not exist")
+        else:
             os.remove(self.pathname)
             print("{0} deleted by process {1} ".format(self.pathname, self.pid))
-        except IOError as ioe:
-            print('An error occured while deleting {0}'.format(self.pathname))
 
 
