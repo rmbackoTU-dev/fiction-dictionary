@@ -1,4 +1,5 @@
 from fict_dict.dataFile import dataFile
+from fict_dict.fiction_dictionary import FictionDict
 import unittest
 import os
 import sys
@@ -10,22 +11,18 @@ import sys
 
 
 class TestTempFile(unittest.TestCase):
-    currentdir=os.path.dirname(os.path.realpath(__file__))
-    testFile=os.path.join(currentdir, 'testFileOne.json')
-    testFileTwo=os.path.join(currentdir, 'testFileTwo.json')
-    test_temp=dataFile(os.getpid(), currentdir)
-    testDict={"A": ["The quick brown fox jumps over the lazy dog"]}
-    testDictTwo={"Abba": ["A Band"], "Abba-Kadabra" : ["A magical command"]}
+
 
     def setUp(self):
-        self.test_temp.setNewDictionary(self.testDict, "A")
+        self.currentdir=os.path.dirname(os.path.realpath(__file__))
+        self.testFile=os.path.join(self.currentdir, 'testFileOne.json')
+        self.testDict={"A": ["The quick brown fox jumps over the lazy dog"]}
 
 
     def tearDown(self):
         # Remove any temp files remaining after testing
-        if os.path.isfile(self.test_temp.temp_abs):
-            os.remove(self.test_temp.temp_abs)
-        self.test_temp.set_new_dictionary({}, "")
+        if os.path.isfile(self.testFile):
+            os.remove(self.testFile)
 
     def test_BestCase(self):
         '''
@@ -35,8 +32,20 @@ class TestTempFile(unittest.TestCase):
         *import
         *delete
         '''
-        newDataFile=dataFile(os.getPid(), self.currentdir )
-        self.fail("Test has not been implemented yet")
+        newDataFile=dataFile(os.getpid(), self.testFile )
+        newFictDict=FictionDict('Test-Dictionary', self.testDict)
+        newDataFile.exportJSON(newFictDict.data)
+        self.assertTrue(os.path.exists(newDataFile.file))
+        #add a new word and export the dictionary to the same file
+        newWord={"Bread" : ["A grainy food made from wheat and baked in an oven"]}
+        newFictDict.addWord(newWord)
+        newDataFile.exportOverwriteJSON(newFictDict.data)
+        #assert modifed, then test import and assert that the word was added
+        inDict=newDataFile.importJSON()
+        #if the insert and import was sucessful we should find bread in the imported dictionary
+        self.assertEqual(["Bread"], inDict.searchDict("Bread"))
+        newDataFile.deleteJSON()
+        self.assertFalse(os.path.exists(newDataFile.file))
 
     def test_WorstCase(self):
         '''
@@ -48,4 +57,5 @@ class TestTempFile(unittest.TestCase):
         *test import IOError
         *test delete file does not exist
         '''
+
         self.fail("Test has not been implemented yet")

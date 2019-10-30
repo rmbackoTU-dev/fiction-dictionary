@@ -17,9 +17,13 @@ class FictionDict(UserDict):
     #Keep class generation generic do the fancy stuff later
     def __init__(self, name=" ",  data=dict(), **kwargs):
         UserDict.__init__(self)
+        if not isinstance(name, str):
+            raise ValueError("Name must be a string.")
         self.name=name
         #check presence of kwargs first
         if not kwargs :
+            if not isinstance(data, dict):
+                raise ValueError("Data must be of type dictionary")
             self.update(data)
         else:
             self.update(kwargs)
@@ -49,8 +53,7 @@ class FictionDict(UserDict):
         #Check that value is of type dictionary and replace data with value
         #Otherwise return error.
         try:
-            set=(kwargs is None)
-            if  not kwargs:
+            if not kwargs:
                 #check value if empty throw error
                 if value is None:
                     raise ValueError("Value must be defined")
@@ -269,8 +272,8 @@ class FictionDict(UserDict):
             raise TypeError("SubString must be a string")
         left_to_right_list=self.left_to_right_match_list(substring)
         right_to_left_list=self.right_to_left_match_list(substring)
-        full_match_list=left_to_right_list.append(right_to_left_list)
-        return full_match_list
+        left_to_right_list.extend(right_to_left_list)
+        return left_to_right_list
 
     def left_to_right_match_list(self, search_string):
         '''
