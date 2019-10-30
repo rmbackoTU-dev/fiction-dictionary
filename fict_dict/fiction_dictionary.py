@@ -42,6 +42,13 @@ class FictionDict(UserDict):
             raise ValueError("Name must be defined")
         self.__name=value
 
+    def getSerializableData(self):
+        serializableDict=dict()
+        nameDict={"Name": self.name}
+        serializableDict.append(nameDict)
+        serializableDict.append(self.data)
+        return serializableDict
+
     def set_Data(self, value, **kwargs):
         '''
         Objec dictionary setter
