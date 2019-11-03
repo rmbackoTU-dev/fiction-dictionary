@@ -49,11 +49,13 @@ class dataFile():
             raise IOError("This file does not exist")
         else:
             print('{0} reading from {1}'.format(self.pid, self.file))
-            tempName='tempDictionaryName'
             with open(self.file, 'r+') as json_file:
-                importData: FictionDict=FictionDict(tempName, json.load(json_file))
+                importData=json.load(json_file)
+                dictName=importData["Name"]
+                del (importData["Name"])
+                dictData: FictionDict=FictionDict(dictName, importData)
                 json_file.close()
-            return importData
+            return dictData
 
     def deleteJSON(self):
         if not os.path.isfile(self.file):

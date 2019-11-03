@@ -45,8 +45,8 @@ class FictionDict(UserDict):
     def getSerializableData(self):
         serializableDict=dict()
         nameDict={"Name": self.name}
-        serializableDict.append(nameDict)
-        serializableDict.append(self.data)
+        serializableDict.update(nameDict)
+        serializableDict.update(self.data)
         return serializableDict
 
     def set_Data(self, value, **kwargs):

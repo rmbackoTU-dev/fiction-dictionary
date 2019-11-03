@@ -34,14 +34,17 @@ class TestTempFile(unittest.TestCase):
         '''
         newDataFile=dataFile(os.getpid(), self.testFile )
         newFictDict=FictionDict('Test-Dictionary', self.testDict)
-        newDataFile.exportJSON(newFictDict.data)
+        newDataFile.exportJSON(newFictDict.getSerializableData())
         self.assertTrue(os.path.exists(newDataFile.file))
         #add a new word and export the dictionary to the same file
         newWord={"Bread" : ["A grainy food made from wheat and baked in an oven"]}
         newFictDict.addWord(newWord)
-        newDataFile.exportOverwriteJSON(newFictDict.data)
+        newDataFile.exportOverwriteJSON(newFictDict.getSerializableData())
         #assert modifed, then test import and assert that the word was added
         inDict=newDataFile.importJSON()
+        #test imported dict has same data as newFictDict
+        self.assertEqual(inDict.data, newFictDict.data)
+        self.assertEqual(inDict.name, newFictDict.name)
         #if the insert and import was sucessful we should find bread in the imported dictionary
         self.assertEqual(["Bread"], inDict.searchDict("Bread"))
         newDataFile.deleteJSON()
@@ -57,5 +60,14 @@ class TestTempFile(unittest.TestCase):
         *test import IOError
         *test delete file does not exist
         '''
-
-        self.fail("Test has not been implemented yet")
+        self.assertRaises(ValueError, dataFile, None, self.testFile)
+        self.assertRaises(ValueError, dataFile, os.getpid(), '')
+        newDataFile=dataFile(os.getpid(), self.testFile)
+        self.assertRaises(ValueError, newDataFile.exportOverwriteJSON, None)
+        ioErrorFile=os.path.join(self.currentdir, "fileNotAvailable.json")
+        newDataFileTwo=dataFile(os.getpid(),  ioErrorFile)
+        newDataFileThree=dataFile(os.getpid(), self.currentdir)
+        self.assertRaises(IOError, newDataFileThree.exportJSON, self.testDict)
+        self.assertRaises(IOError, newDataFileTwo.exportOverwriteJSON, self.testDict)
+        self.assertRaises(IOError, newDataFileTwo.importJSON)
+        self.assertRaises(IOError, newDataFileTwo.deleteJSON)
