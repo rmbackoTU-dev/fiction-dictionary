@@ -15,7 +15,7 @@ class fict_dict_cli_access():
     def createDictionary(self, dictName, fileName):
         newDict=FictionDict(dictName)
         newDataFile=dataFile(self.pid, fileName)
-        newDataFile.exportJSON(newDict)
+        newDataFile.exportJSON(newDict.getSerializableData())
 
     def deleteDictionary(self, fileName):
         '''
@@ -29,7 +29,7 @@ class fict_dict_cli_access():
         newDataFile=dataFile(self.pid, fileName)
         importedDictionary: FictionDict=newDataFile.importJSON()
         importedDictionary.editWord(word,definition, synonm)
-        newDataFile.exportOverwriteJSON(importedDictionary)
+        newDataFile.exportOverwriteJSON(importedDictionary.getSerializableData())
 
 
     def addDictionaries(self, fileNameOne, fileNameTwo):
@@ -38,7 +38,7 @@ class fict_dict_cli_access():
         importDictionaryOne: FictionDict=newDataFileOne.importJSON()
         importDictionaryTwo: FictionDict=newDataFileTwo.importJSON()
         sumDict=importDictionaryOne+importDictionaryTwo
-        newDataFileOne.exportOverwriteJSON(sumDict)
+        newDataFileOne.exportOverwriteJSON(sumDict.getSerializableData())
 
     def diffDictionaries(self, fileNameOne, fileNameTwo):
         newDataFileOne=dataFile(self.pid, fileNameOne)
@@ -46,14 +46,14 @@ class fict_dict_cli_access():
         importDictionaryOne: FictionDict=newDataFileOne.importJSON()
         importDictionaryTwo: FictionDict=newDataFileTwo.importJSON()
         diffDict=importDictionaryOne-importDictionaryTwo
-        newDataFileOne.exportOverwriteJSON(diffDict)
+        newDataFileOne.exportOverwriteJSON(diffDict.getSerializableData())
 
     def copyDictionaries(self, srcFile, destFile):
         oldDataFile=dataFile(self.pid, srcFile)
         newDataFile=dataFile(self.pid, destFile)
         importDict: FictionDict=oldDataFile.importJSON()
         exportDict=importDict.copyDict()
-        newDataFile.exportJSON(exportDict)
+        newDataFile.exportJSON(exportDict.getSerializableData())
 
     def get_word_Str(self, srcFile, word):
         targetDictionary=dataFile(self.pid, srcFile)
