@@ -52,7 +52,7 @@ def main():
                                  "prints te whole dictionary from the source file specified\n" +
                                  "Syntax: fictDictCli print <source file> [word] ")
     print_subparser.add_argument('source_file', action='store', type=str)
-    print_subparser.add_argument('word', action='store', type=str, default='')
+    print_subparser.add_argument('word', action='store', nargs='?', type=str, default='')
 
     '''
     Search Options
@@ -69,69 +69,90 @@ def main():
                          "-pd print the definitions of the results\n"+
                          "Syntax: fictDictCli search <-l|-r|-b> [-p]  <source file> <search_term>")
     choices=search_subparser.add_mutually_exclusive_group()
-    choices.add_argument('-l', action='store_true')
-    choices.add_argument('-r', action='store_true')
-    choices.add_argument('-b', action='store_true', default=True)
-    search_subparser.add_argument('-p', action='store_true', required=False)
+    choices.add_argument('--left-to-right','-l', action='store_true')
+    choices.add_argument('--right-to-left','-r', action='store_true')
+    choices.add_argument('--both','-b', action='store_true', default=True)
     search_subparser.add_argument('source_file', action='store', type=str)
     search_subparser.add_argument('search_term', action='store', type=str)
+    search_subparser.add_argument('-p', action='store_true', required=False)
     args=parser.parse_args()
     if args.command == "create":
         if (args.dictionary_name is None or args.destination_file is None):
             parser.error("Arguments for create have not been correctly specified.")
         else:
-            dictName=parser.dictionary_name
-            destFile=parser.destination_file
-            print("Creating dictionary " +dictName+ "at file "+destFile)
+            dictName=args.dictionary_name
+            destFile=args.destination_file
+            print("Creating dictionary " +dictName+ " at file "+destFile)
     elif args.command == "insert":
         if(args.destination_file is None or args.word is None or args.definition is None):
             parser.error("Arguments for insert have not been correctly specified.")
         else:
-            pass
+            destFile=args.destination_file
+            word=args.word
+            definition=args.definition
+            print("Inserting "+word+" defined as "+ definition+ " into dictionary located at "+
+                  destFile)
     elif args.command == "delete":
         if(args.destination_file is None or args.word is None):
             parser.error("Arguments for delete have not been correctly specified.")
         else:
-            pass
+            destFile=args.destination_file
+            word=args.word
+            print("Deleting "+word+" from the dictionary file "+destFile)
     elif args.command == 'edit':
         if(args.destination_file is None or args.word is None or args.definition is None):
             parser.error("Arguments for edit have not been correctly specified.")
         else:
-            pass
+            destFile=args.destination_file
+            word=args.word
+            definition=args.definition
+            print("Editting the word "+word+", and changing the definition to "+definition+
+                  " in the dictionary file "+destFile)
     elif args.command == 'add':
         if(args.destination_file is None or args.source_file is None):
             parser.error("Arguments for add have not been correctly specified")
         else:
-            pass
+            destFile=args.destination_file
+            srcFile=args.source_file
+            print("Adding the dictionary located at"+srcFile+" to "+destFile)
     elif args.command == 'diff':
         if(args.destination_file is None or args.source_file is None):
             parser.error("Arguments for differentiate have not been correctly specified")
         else:
-            pass
+            destFile=args.destination_file
+            srcFile=args.source_file
+            print("Storing the difference between "+destFile+" and "+srcFile+" in "+destFile)
     elif args.command == 'copy':
         if(args.destination_file is None or args.source_file is None):
             parser.error("Arguments for copy have not been correctly specified")
         else:
-            pass
+            destFile=args.destination_file
+            srcFile=args.source_file
+            print("Copying the dictionary from"+srcFile+" to "+destFile)
     elif args.command == 'print':
-        if(args.destination_file is None):
+        if(args.source_file is None):
             parser.error("Arguments for print have not been correctly specified")
         else:
-            pass
+            destFile=args.source_file
+            if(args.word != ''):
+                word=args.word
+                print('Printing the definition of '+word+ ' from '+destFile)
+            else:
+                print('Printing dictionary found in '+destFile)
     elif args.command == 'search':
-        if(args.destintion_file is None or args.search_term is None):
+        if(args.source_file is None or args.search_term is None):
             parser.error("Specify a dictionary file to search from")
         else:
-            dictFile=parser.destination_file
-            search_term=parser.search_term
-            if(parser.left_to_right):
+            dictFile=args.source_file
+            search_term=args.search_term
+            if(args.left_to_right):
                 search_method='left_to_right'
-            elif (parser.right_to_left):
+            elif (args.right_to_left):
                 search_method='right_to_left'
             else:
                 search_method='both'
-            print("Searching for "+search_term+" using"+search_method+" on "+dictFile)
-            if (parser.pd):
+            print("Searching for "+search_term+" using "+search_method+" on "+dictFile)
+            if (args.p):
                 print("Printing out search matchs and definitions...")
             else:
                 print("Printing out search matchs")
