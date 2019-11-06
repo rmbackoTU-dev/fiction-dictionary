@@ -7,6 +7,7 @@ import argparse
 
 def main():
 
+    cliClient=fict_dict_cli_access()
     parser=argparse.ArgumentParser(description="Fiction dictionary allows users to create custom dictionaries"
                                                +" using JSON files \n The basic syntax is:"+
                                                 "fictdictCli <option> [option parameters]" )
@@ -83,6 +84,8 @@ def main():
             dictName=args.dictionary_name
             destFile=args.destination_file
             print("Creating dictionary " +dictName+ " at file "+destFile)
+            cliClient.createDictionary(dictName, destFile)
+
     elif args.command == "insert":
         if(args.destination_file is None or args.word is None or args.definition is None):
             parser.error("Arguments for insert have not been correctly specified.")
@@ -92,6 +95,7 @@ def main():
             definition=args.definition
             print("Inserting "+word+" defined as "+ definition+ " into dictionary located at "+
                   destFile)
+            cliClient.addWord(destFile, word, definition)
     elif args.command == "delete":
         if(args.destination_file is None or args.word is None):
             parser.error("Arguments for delete have not been correctly specified.")
@@ -99,6 +103,7 @@ def main():
             destFile=args.destination_file
             word=args.word
             print("Deleting "+word+" from the dictionary file "+destFile)
+            cliClient.deleteWord(destFile, word)
     elif args.command == 'edit':
         if(args.destination_file is None or args.word is None or args.definition is None):
             parser.error("Arguments for edit have not been correctly specified.")
@@ -108,6 +113,7 @@ def main():
             definition=args.definition
             print("Editting the word "+word+", and changing the definition to "+definition+
                   " in the dictionary file "+destFile)
+            cliClient.editDictionary(destFile, word, definition)
     elif args.command == 'add':
         if(args.destination_file is None or args.source_file is None):
             parser.error("Arguments for add have not been correctly specified")
@@ -115,6 +121,7 @@ def main():
             destFile=args.destination_file
             srcFile=args.source_file
             print("Adding the dictionary located at"+srcFile+" to "+destFile)
+            cliClient.addDictionaries(destFile, srcFile)
     elif args.command == 'diff':
         if(args.destination_file is None or args.source_file is None):
             parser.error("Arguments for differentiate have not been correctly specified")
@@ -122,6 +129,7 @@ def main():
             destFile=args.destination_file
             srcFile=args.source_file
             print("Storing the difference between "+destFile+" and "+srcFile+" in "+destFile)
+            cliClient.diffDictionaries(destFile, srcFile)
     elif args.command == 'copy':
         if(args.destination_file is None or args.source_file is None):
             parser.error("Arguments for copy have not been correctly specified")
@@ -129,6 +137,7 @@ def main():
             destFile=args.destination_file
             srcFile=args.source_file
             print("Copying the dictionary from"+srcFile+" to "+destFile)
+            cliClient.copyDictionaries(destFile, srcFile)
     elif args.command == 'print':
         if(args.source_file is None):
             parser.error("Arguments for print have not been correctly specified")
@@ -137,8 +146,12 @@ def main():
             if(args.word != ''):
                 word=args.word
                 print('Printing the definition of '+word+ ' from '+destFile)
+                word_to_print=cliClient.get_word_Str()
+                print(word_to_print)
             else:
                 print('Printing dictionary found in '+destFile)
+                dict_to_print=cliClient.get_dict_Str()
+                print(dict_to_print)
     elif args.command == 'search':
         if(args.source_file is None or args.search_term is None):
             parser.error("Specify a dictionary file to search from")
@@ -154,8 +167,24 @@ def main():
             print("Searching for "+search_term+" using "+search_method+" on "+dictFile)
             if (args.p):
                 print("Printing out search matchs and definitions...")
+                if(search_term == 'left_to_right'):
+                    printList=cliClient.searchDictLeftDef(dictFile, search_term)
+                elif(search_term == 'right_to_left'):
+                    printList=cliClient.searchDictRightDef(dictFile, search_term)
+                else:
+                    printList=cliClient.searchDictWithDef(dictFile, search_term)
+                for i in printList:
+                    print(i)
             else:
                 print("Printing out search matchs")
+                if(search_term == 'left_to_right'):
+                    printList=cliClient.searchLeftDict(dictFile, search_term)
+                elif(search_term == 'right_to_left'):
+                    printList=cliClient.searchRightDict(dictFile, search_term)
+                else:
+                    printList=cliClient.searchDict(dictFile, search_term)
+                for i in printList:
+                    print(i)
     else:
         parser.print_help()
 

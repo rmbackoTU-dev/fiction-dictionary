@@ -25,7 +25,24 @@ class fict_dict_cli_access():
         newDataFile=dataFile(self.pid, fileName)
         newDataFile.deleteJSON()
 
-    def editDictionary(self, fileName, word, definition, synonm):
+    '''
+    Deletes a word from the dictionary and then overwrites
+    the old dictionary    
+    '''
+    def deleteWord(self, fileName, word):
+        newDataFile=dataFile(self.pid, fileName)
+        importDict: FictionDict=newDataFile.importJSON()
+        importDict.deleteWord(word)
+        newDataFile.exportOverwriteJSON(importDict.getSerializableData())
+
+    def addWord(self, fileName, word, definition):
+        newDataFile=dataFile(self.pid, fileName)
+        importedDictionary: FictionDict=newDataFile.importJSON()
+        newWord={word:definition}
+        importedDictionary.addWord(newWord)
+        newDataFile.exportOverwriteJSON(importedDictionary.getSerializableData())
+
+    def editDictionary(self, fileName, word, definition, synonm=0):
         newDataFile=dataFile(self.pid, fileName)
         importedDictionary: FictionDict=newDataFile.importJSON()
         importedDictionary.editWord(word,definition, synonm)
@@ -99,7 +116,7 @@ class fict_dict_cli_access():
             strList.append(tempStr)
         return strList
 
-    def searchDictLeftDict(self, dictFile, searchWord):
+    def searchDictLeftDef(self, dictFile, searchWord):
         searchTarget=dataFile(self.pid, dictFile)
         strList=[]
         importDict: FictionDict=searchTarget.importJSON()
@@ -109,7 +126,7 @@ class fict_dict_cli_access():
             strList.append(tempStr)
         return strList
 
-    def searchDictRightDict(self, dictFile, searchWord):
+    def searchDictRightDef(self, dictFile, searchWord):
         searchTarget=dataFile(self.pid)
         strList=[]
         importDict: FictionDict=searchTarget.importJSON()
