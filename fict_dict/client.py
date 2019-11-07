@@ -9,7 +9,7 @@ Client class used to call use functionality of fiction dictionary
 class fict_dict_cli_access():
 
     def __init__(self):
-        pid=os.getpid()
+        self.pid=os.getpid()
 
 
     def createDictionary(self, dictName, fileName):
@@ -38,7 +38,7 @@ class fict_dict_cli_access():
     def addWord(self, fileName, word, definition):
         newDataFile=dataFile(self.pid, fileName)
         importedDictionary: FictionDict=newDataFile.importJSON()
-        newWord={word:definition}
+        newWord={word:[definition]}
         importedDictionary.addWord(newWord)
         newDataFile.exportOverwriteJSON(importedDictionary.getSerializableData())
 

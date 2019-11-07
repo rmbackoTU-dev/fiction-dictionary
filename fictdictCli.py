@@ -146,11 +146,11 @@ def main():
             if(args.word != ''):
                 word=args.word
                 print('Printing the definition of '+word+ ' from '+destFile)
-                word_to_print=cliClient.get_word_Str()
+                word_to_print=cliClient.get_word_Str(destFile, word)
                 print(word_to_print)
             else:
                 print('Printing dictionary found in '+destFile)
-                dict_to_print=cliClient.get_dict_Str()
+                dict_to_print=cliClient.get_dict_Str(destFile)
                 print(dict_to_print)
     elif args.command == 'search':
         if(args.source_file is None or args.search_term is None):
@@ -167,6 +167,7 @@ def main():
             print("Searching for "+search_term+" using "+search_method+" on "+dictFile)
             if (args.p):
                 print("Printing out search matchs and definitions...")
+                print_list=[]
                 if(search_term == 'left_to_right'):
                     printList=cliClient.searchDictLeftDef(dictFile, search_term)
                 elif(search_term == 'right_to_left'):
