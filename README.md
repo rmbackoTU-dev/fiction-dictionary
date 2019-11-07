@@ -1,25 +1,26 @@
 
 
 ## fiction-dictionary -
-#version 0.0.11 developmenet branch
-#Note: this is an unfinished project and such does not have all of the forementioned feature.
+#version 0.1.0 developmenet branch - usable alpha
+#Note: This program is a work in progress new features are to come. Some error checking is not currently in place.
 #This program creates and saves fictional words and their definitions in a searchable form
 
 #Create:'If you do not have a current dictionary create one.'
 #
-#Add:'add a word to the dictionary.'
+#Insert:'add a word to the dictionary.'
 #
 #Delete:'delete a word from the dictionary.'
 #
 #Edit: 'change the definition of a word already in the dictionary.'
 #
-#Save: 'save the dictionary to a json file.'
+#Add : 'Add two dictionary files together'
 #
-#Import: 'If you do not have a current dictionary import an existing one.'
+#Diff: 'Takes the differences between two dictionary files and stores them in the first dictionary file'
 #
-#Search" 'Use partial word to search the dictionary for words beginning with enter letters'
+#Copy: 'Copies a dictionary from one file to a source file.'
 #
-#Test: 'Run Unit Test found in the test directory. (Not commited with in repository)'
+#Print: 'Prints out the entire dictionary, or prints out a word specified by the user'
 #
-#Quit: 'Exit the program, does not save the current working dictionary'
+#Search 'Use partial word to search the dictionary for words beginning with enter letters'
+#
 
